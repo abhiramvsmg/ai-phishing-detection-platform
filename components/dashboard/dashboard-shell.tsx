@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { AnalyticsCharts } from "@/components/dashboard/analytics-charts";
-import { ScanHistoryTable } from "@/components/dashboard/scan-history-table";
 import { SecurityCopilotPanel } from "@/components/dashboard/security-copilot-panel";
 import { Sidebar } from "@/components/dashboard/sidebar";
-import { ThreatOverviewCards } from "@/components/dashboard/threat-overview-cards";
 import { TopNavbar } from "@/components/dashboard/top-navbar";
+import { UrlScannerDashboard } from "@/components/dashboard/url-scanner-dashboard";
 
 interface DashboardShellProps {
   children?: React.ReactNode;
@@ -58,11 +56,5 @@ export function DashboardShell({ children }: DashboardShellProps) {
 }
 
 export function DashboardContent() {
-  return (
-    <>
-      <ThreatOverviewCards />
-      <AnalyticsCharts />
-      <ScanHistoryTable />
-    </>
-  );
+  return <UrlScannerDashboard />;
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard | PhishGuard AI",
+  title: "URL Scanner Dashboard | PhishGuard AI",
   description:
-    "Enterprise security operations dashboard for AI-powered phishing detection and threat analysis.",
+    "Production URL scanner dashboard for real-time phishing detection, risk scoring, and threat response.",
 };
 
 export default function DashboardLayout({

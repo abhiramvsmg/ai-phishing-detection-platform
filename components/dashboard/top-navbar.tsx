@@ -40,7 +40,7 @@ export function TopNavbar({
 
           <div>
             <h1 className="text-base font-semibold text-white sm:text-lg">
-              Security Dashboard
+              URL Scanner Dashboard
             </h1>
             <p className="hidden text-xs text-zinc-500 sm:block">
               Acme Corp · Production Environment
