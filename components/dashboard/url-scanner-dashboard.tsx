@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import {
   AlertTriangle,
   CheckCircle2,
-  Clock3,
   Link2,
   Radar,
   ShieldCheck,
@@ -22,6 +21,7 @@ interface ScanResult {
   verdict: Verdict;
   findings: string[];
   scannedAt: string;
+  scanId: string;
 }
 
 interface ScanRow {
@@ -32,34 +32,34 @@ interface ScanRow {
   timestamp: string;
 }
 
-const recentScans: ScanRow[] = [
+const initialRecentScans: ScanRow[] = [
   {
     id: "SCN-48291",
     url: "https://paypa1-verify-account-security.com/login",
     score: 96,
     verdict: "Malicious",
-    timestamp: "2 min ago",
+    timestamp: "2026-06-17T14:58:12.000Z",
   },
   {
     id: "SCN-48290",
     url: "https://accounts.google.com/security",
     score: 4,
     verdict: "Safe",
-    timestamp: "8 min ago",
+    timestamp: "2026-06-17T14:52:43.000Z",
   },
   {
     id: "SCN-48289",
     url: "https://microsoft-identity-validation.net",
     score: 72,
     verdict: "Suspicious",
-    timestamp: "14 min ago",
+    timestamp: "2026-06-17T14:46:01.000Z",
   },
   {
     id: "SCN-48288",
     url: "https://portal.company.com",
     score: 3,
     verdict: "Safe",
-    timestamp: "22 min ago",
+    timestamp: "2026-06-17T14:38:27.000Z",
   },
 ];
 
@@ -69,11 +69,30 @@ const verdictStyles: Record<Verdict, string> = {
   Malicious: "text-red-300 bg-red-500/10 border-red-500/30",
 };
 
+const SCAN_SIMULATION_DELAY_MS = 900;
+const URLS_SCANNED_TODAY_BASELINE = 12480;
+
 function getRiskBarClass(score: number): string {
   if (score >= 85) return "bg-red-500";
   if (score >= 60) return "bg-orange-500";
   if (score >= 35) return "bg-amber-500";
   return "bg-emerald-500";
+}
+
+function formatUtcTimestamp(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+
+  return parsed.toLocaleString("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
 }
 
 function validateUrl(input: string): { valid: boolean; value?: URL; error?: string } {
@@ -145,11 +164,8 @@ function analyzeUrl(parsed: URL): ScanResult {
     score,
     verdict,
     findings,
-    scannedAt: new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }),
+    scanId: crypto.randomUUID(),
+    scannedAt: new Date().toISOString(),
   };
 }
 
@@ -158,16 +174,49 @@ export function UrlScannerDashboard() {
   const [error, setError] = useState("");
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<ScanResult | null>(null);
+  const [recentScanRows, setRecentScanRows] =
+    useState<ScanRow[]>(initialRecentScans);
 
-  const statCards = useMemo(
-    () => [
-      { label: "URLs Scanned Today", value: "12,483", icon: Radar, tone: "text-cyan-300" },
-      { label: "Threats Blocked", value: "847", icon: ShieldX, tone: "text-red-300" },
-      { label: "Safe URLs", value: "11,559", icon: ShieldCheck, tone: "text-emerald-300" },
-      { label: "Avg Scan Time", value: "1.1s", icon: Clock3, tone: "text-blue-300" },
-    ],
-    [],
-  );
+  const statCards = useMemo(() => {
+    const safeCount = recentScanRows.filter((scan) => scan.verdict === "Safe").length;
+    const blockedCount = recentScanRows.filter(
+      (scan) => scan.verdict === "Malicious",
+    ).length;
+    const averageRisk =
+      recentScanRows.length === 0
+        ? 0
+        : Math.round(
+            recentScanRows.reduce((sum, scan) => sum + scan.score, 0) /
+              recentScanRows.length,
+          );
+
+    return [
+      {
+        label: "URLs Scanned Today",
+        value: (URLS_SCANNED_TODAY_BASELINE + recentScanRows.length).toLocaleString(),
+        icon: Radar,
+        tone: "text-cyan-300",
+      },
+      {
+        label: "Threats Blocked",
+        value: blockedCount.toString(),
+        icon: ShieldX,
+        tone: "text-red-300",
+      },
+      {
+        label: "Safe URLs",
+        value: safeCount.toString(),
+        icon: ShieldCheck,
+        tone: "text-emerald-300",
+      },
+      {
+        label: "Avg Risk Score",
+        value: `${averageRisk}`,
+        icon: AlertTriangle,
+        tone: "text-blue-300",
+      },
+    ];
+  }, [recentScanRows]);
 
   async function handleScan() {
     const validated = validateUrl(url);
@@ -179,8 +228,21 @@ export function UrlScannerDashboard() {
 
     setError("");
     setIsScanning(true);
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    setResult(analyzeUrl(validated.value));
+    await new Promise((resolve) =>
+      setTimeout(resolve, SCAN_SIMULATION_DELAY_MS),
+    );
+    const scan = analyzeUrl(validated.value);
+    setResult(scan);
+    setRecentScanRows((prev) => [
+      {
+        id: scan.scanId,
+        url: scan.url,
+        score: scan.score,
+        verdict: scan.verdict,
+        timestamp: scan.scannedAt,
+      },
+      ...prev.slice(0, 7),
+    ]);
     setIsScanning(false);
   }
 
@@ -260,7 +322,9 @@ export function UrlScannerDashboard() {
                   >
                     {result.verdict}
                   </span>
-                  <span className="text-xs text-zinc-500">Scanned at {result.scannedAt}</span>
+                  <span className="text-xs text-zinc-500">
+                    {result.scanId} · Scanned at {formatUtcTimestamp(result.scannedAt)} UTC
+                  </span>
                 </div>
                 <p className="break-all font-mono text-xs text-zinc-300">{result.url}</p>
 
@@ -317,7 +381,7 @@ export function UrlScannerDashboard() {
       <GlassCard className="overflow-hidden">
         <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
           <h2 className="text-base font-semibold text-white">Recent URL Scans</h2>
-          <span className="text-xs text-zinc-500">Live stream</span>
+          <span className="text-xs text-zinc-500">Session live stream</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-sm">
@@ -334,7 +398,7 @@ export function UrlScannerDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentScans.map((scan) => (
+              {recentScanRows.map((scan) => (
                 <tr
                   key={scan.id}
                   className="border-b border-white/[0.05] text-zinc-300 transition-colors hover:bg-white/[0.02]"
@@ -349,7 +413,9 @@ export function UrlScannerDashboard() {
                       {scan.verdict}
                     </span>
                   </td>
-                  <td className="px-5 py-3 text-xs text-zinc-500">{scan.timestamp}</td>
+                  <td className="px-5 py-3 text-xs text-zinc-500">
+                    {formatUtcTimestamp(scan.timestamp)} UTC
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -359,7 +425,7 @@ export function UrlScannerDashboard() {
 
       <div className="flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-3 text-xs text-emerald-300">
         <CheckCircle2 className="h-4 w-4" />
-        Scanner engine healthy. Threat signature feed updated 27 seconds ago.
+      Scanner engine healthy. Threat signature feed recently updated.
       </div>
     </div>
   );
