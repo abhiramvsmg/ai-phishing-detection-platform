@@ -1,174 +1,185 @@
 "use client";
 
-import { motion } from "framer-motion";
-import {
-  BarChart3,
-  ChevronLeft,
-  FileText,
-  LayoutDashboard,
-  Radar,
-  ScanSearch,
-  Settings,
-  Shield,
-  Users,
-  X,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  LayoutDashboard,
+  Search,
+  ShieldAlert,
+  Globe2,
+  BarChart3,
+  FileText,
+  Users,
+  Settings,
+  LogIn,
+  UserPlus,
+  ChevronLeft,
+  Menu,
+  X,
+  ShieldCheck,
+  Activity,
+  Zap,
+  Cpu,
+  Circle,
+} from "lucide-react";
 
-const navItems = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Threat Scans", href: "/dashboard", icon: ScanSearch },
-  { label: "Threat Intel", href: "/dashboard", icon: Radar },
-  { label: "Analytics", href: "/dashboard", icon: BarChart3 },
-  { label: "Reports", href: "/dashboard", icon: FileText },
-  { label: "Team", href: "/dashboard", icon: Users },
-  { label: "Settings", href: "/dashboard", icon: Settings },
-];
-
-interface SidebarProps {
-  collapsed: boolean;
-  mobileOpen: boolean;
-  onToggleCollapse: () => void;
-  onCloseMobile: () => void;
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+  badge?: string | number;
 }
 
-export function Sidebar({
-  collapsed,
-  mobileOpen,
-  onToggleCollapse,
-  onCloseMobile,
-}: SidebarProps) {
+interface NavGroup {
+  label: string;
+  items: NavItem[];
+}
+
+const NAVIGATION_GROUPS: NavGroup[] = [
+  {
+    label: "Analysis",
+    items: [
+      { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+      { name: "URL Scanner", href: "/scanner", icon: Search },
+      { name: "Email Analysis", href: "/email-analysis", icon: ShieldAlert, badge: 2 },
+    ],
+  },
+  {
+    label: "Intelligence",
+    items: [
+      { name: "Threat Intel", href: "/threat-intel", icon: Globe2, badge: "Live" },
+      { name: "Analytics", href: "/analytics", icon: BarChart3 },
+      { name: "Reports", href: "/reports", icon: FileText },
+    ],
+  },
+  {
+    label: "Management",
+    items: [
+      { name: "Team", href: "/team", icon: Users },
+      { name: "Settings", href: "/settings", icon: Settings },
+    ],
+  },
+];
+
+export function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [threatCount, setThreatCount] = useState(14201);
 
-  const content = (
-    <div className="flex h-full flex-col">
-      {/* Logo */}
-      <div className="flex h-16 items-center justify-between border-b border-white/[0.06] px-4">
-        <Link href="/" className="flex items-center gap-2.5 overflow-hidden">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-[0_0_20px_rgba(6,182,212,0.35)]">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
-          {!collapsed && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="whitespace-nowrap text-base font-semibold text-white"
-            >
-              PhishGuard<span className="text-cyan-400">AI</span>
-            </motion.span>
-          )}
-        </Link>
-        <button
-          onClick={onCloseMobile}
-          className="rounded-lg p-1.5 text-zinc-400 hover:bg-white/[0.06] hover:text-white lg:hidden"
-          aria-label="Close sidebar"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setThreatCount((prev) => prev + Math.floor(Math.random() * 3));
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-      {/* Nav */}
-      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
-        {!collapsed && (
-          <p className="mb-2 px-3 text-[10px] font-semibold tracking-widest text-zinc-600 uppercase">
-            Security Console
-          </p>
-        )}
-        {navItems.map((item) => {
-          const active = pathname === item.href && item.label === "Dashboard";
-          const Icon = item.icon;
-
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={onCloseMobile}
-              title={collapsed ? item.label : undefined}
-              className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
-                active
-                  ? "border border-cyan-500/20 bg-cyan-500/10 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.12)]"
-                  : "border border-transparent text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
-              }`}
-            >
-              <Icon
-                className={`h-[18px] w-[18px] shrink-0 ${
-                  active ? "text-cyan-400" : "text-zinc-500 group-hover:text-zinc-300"
-                }`}
-              />
-              {!collapsed && <span>{item.label}</span>}
-              {active && !collapsed && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Status + collapse */}
-      <div className="border-t border-white/[0.06] p-3">
-        {!collapsed && (
-          <div className="mb-3 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-2">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="text-xs font-medium text-emerald-400">
-                All sensors online
-              </span>
-            </div>
-            <p className="mt-1 text-[10px] text-zinc-500">
-              Last sync: 12 seconds ago
-            </p>
-          </div>
-        )}
-
-        <button
-          onClick={onToggleCollapse}
-          className="hidden w-full items-center justify-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] py-2 text-xs text-zinc-500 transition-colors hover:border-white/10 hover:text-zinc-300 lg:flex"
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          <ChevronLeft
-            className={`h-4 w-4 transition-transform ${collapsed ? "rotate-180" : ""}`}
-          />
-          {!collapsed && "Collapse"}
-        </button>
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   return (
     <>
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onCloseMobile}
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
-        />
-      )}
+      {/* Mobile Toggle */}
+      <div className="lg:hidden fixed top-4 left-4 z-[70]">
+        <button
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          className="p-2.5 bg-slate-900/80 border border-slate-800 rounded-xl text-cyan-400 backdrop-blur-md shadow-xl"
+        >
+          {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
 
-      {/* Mobile sidebar */}
+      {/* Sidebar Panel */}
       <motion.aside
         initial={false}
-        animate={{ x: mobileOpen ? 0 : "-100%" }}
-        transition={{ type: "spring", damping: 28, stiffness: 320 }}
-        className="fixed inset-y-0 left-0 z-50 w-64 border-r border-white/[0.06] bg-[#030712]/95 backdrop-blur-xl lg:hidden"
+        animate={{
+          width: isCollapsed ? 80 : 280,
+          x: isMobileOpen ? 0 : (typeof window !== 'undefined' && window.innerWidth < 1024 ? -300 : 0)
+        }}
+        className={`
+          fixed top-0 left-0 h-screen z-[60] 
+          bg-slate-950/40 backdrop-blur-xl border-r border-slate-800/50 
+          flex flex-col transition-all duration-300 ease-in-out
+          ${isMobileOpen ? "translate-x-0 !w-[280px]" : "-translate-x-full lg:translate-x-0"}
+        `}
       >
-        {content}
-      </motion.aside>
+        {/* Header */}
+        <div className="h-20 flex items-center px-7 border-b border-slate-800/30 shrink-0">
+          <Link href="/dashboard" className="flex items-center gap-3 group">
+            <ShieldCheck className="w-8 h-8 text-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.4)]" />
+            {(!isCollapsed || isMobileOpen) && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col">
+                <span className="font-black text-xl tracking-tighter text-white uppercase leading-none">
+                  PHISH<span className="text-cyan-500">AI</span>
+                </span>
+                <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">
+                  SOC COMMAND
+                </span>
+              </motion.div>
+            )}
+          </Link>
+        </div>
 
-      {/* Desktop sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ width: collapsed ? 72 : 256 }}
-        transition={{ type: "spring", damping: 28, stiffness: 320 }}
-        className="hidden shrink-0 border-r border-white/[0.06] bg-[#030712]/80 backdrop-blur-xl lg:block"
-      >
-        <div className="sticky top-0 h-screen overflow-hidden">{content}</div>
+        {/* Nav */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden py-8 px-4 space-y-10 no-scrollbar">
+          {NAVIGATION_GROUPS.map((group) => (
+            <div key={group.label}>
+              {(!isCollapsed || isMobileOpen) && (
+                <h3 className="px-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mb-4">
+                  {group.label}
+                </h3>
+              )}
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link key={item.href} href={item.href} className="block group">
+                      <div className={`relative flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 ${
+                        isActive ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_15px_-5px_rgba(6,182,212,0.3)]" : "text-slate-400 hover:text-white hover:bg-slate-800/30"
+                      }`}>
+                        <item.icon className={`w-5 h-5 shrink-0 ${isActive ? "text-cyan-400" : "group-hover:text-cyan-400"}`} />
+                        {(!isCollapsed || isMobileOpen) && (
+                          <span className="text-sm font-bold tracking-tight">{item.name}</span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer Widgets */}
+        <div className="p-4 mt-auto space-y-4">
+           {(!isCollapsed || isMobileOpen) && (
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Zap className="w-3 h-3 text-amber-500" />
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Global Threats</span>
+                  </div>
+                  <div className="text-xl font-mono font-black text-slate-200 tracking-tighter">{threatCount.toLocaleString()}</div>
+                </div>
+                <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/60 backdrop-blur-md">
+                   <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">System Health</span>
+                      <Circle className="w-2 h-2 text-emerald-500 fill-emerald-500 animate-pulse" />
+                   </div>
+                   <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-cyan-500 w-[94%]" />
+                   </div>
+                </div>
+             </motion.div>
+           )}
+          
+          <button onClick={() => setIsCollapsed(!isCollapsed)} className="hidden lg:flex w-full items-center justify-center py-3 text-slate-500 hover:text-white transition-colors">
+            <ChevronLeft size={20} className={`transition-transform duration-500 ${isCollapsed ? "rotate-180" : ""}`} />
+          </button>
+        </div>
       </motion.aside>
     </>
   );
