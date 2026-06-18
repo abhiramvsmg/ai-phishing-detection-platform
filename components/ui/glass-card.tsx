@@ -1,25 +1,13 @@
-import type { ReactNode } from "react";
+// components/ui/SecurityCard.tsx
+import { motion } from "framer-motion";
 
-interface GlassCardProps {
-  children: ReactNode;
-  className?: string;
-  hover?: boolean;
-}
-
-export function GlassCard({
-  children,
-  className = "",
-  hover = false,
-}: GlassCardProps) {
-  return (
-    <div
-      className={`rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.35)] ${
-        hover
-          ? "transition-all hover:border-cyan-500/20 hover:bg-white/[0.05]"
-          : ""
-      } ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
+export const SecurityCard = ({ children, title }: { children: React.ReactNode, title: string }) => (
+  <motion.div 
+    whileHover={{ y: -2 }}
+    className="bg-brand-surface/40 backdrop-blur-xl border border-white/10 rounded-xl p-5 shadow-2xl relative overflow-hidden"
+  >
+    <div className="absolute top-0 left-0 w-1 h-full bg-brand-accent/50" />
+    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">{title}</h3>
+    {children}
+  </motion.div>
+);
