@@ -1,157 +1,219 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { 
   ShieldCheck, 
-  AlertTriangle, 
-  Globe, 
-  Mail, 
-  TrendingUp, 
+  ArrowRight,
+  Zap,
+  Brain,
+  Lock,
   Activity,
-  ArrowUpRight,
-  ShieldAlert
+  BarChart3,
+  CheckCircle,
+  Sparkles,
+  Globe,
+  Clock
 } from 'lucide-react';
 
-// --- Local Dashboard Components ---
+// Landing Page with Modern UI
+export default function Home() {
+  const features = [
+    {
+      icon: Brain,
+      title: "AI-Powered Detection",
+      description: "Advanced ML models detect phishing attempts with 99.8% accuracy in real-time",
+    },
+    {
+      icon: Lock,
+      title: "Enterprise Security",
+      description: "Bank-grade encryption and security protocols for maximum protection",
+    },
+    {
+      icon: Zap,
+      title: "Instant Analysis",
+      description: "Analyze URLs and emails in milliseconds with our lightning-fast engine",
+    },
+    {
+      icon: Globe,
+      title: "Global Threat Intel",
+      description: "Access real-time threat intelligence from across the globe",
+    },
+    {
+      icon: BarChart3,
+      title: "Advanced Analytics",
+      description: "Comprehensive dashboards with actionable insights and trends",
+    },
+    {
+      icon: Activity,
+      title: "Live Monitoring",
+      description: "24/7 monitoring with instant alerts and automated response",
+    },
+  ];
 
-const KPICard = ({ title, value, icon: Icon, trend, color }: any) => (
-  <div className="bg-card border border-border p-5 rounded-xl hover:border-primary/50 transition-all group">
-    <div className="flex justify-between items-start mb-4">
-      <div className={`p-2 rounded-lg bg-background border border-border group-hover:scale-110 transition-transform`}>
-        <Icon className={`w-5 h-5 ${color}`} />
-      </div>
-      <span className="text-[10px] font-black text-success flex items-center gap-1 bg-success/10 px-2 py-0.5 rounded">
-        <TrendingUp className="w-3 h-3" /> {trend}
-      </span>
-    </div>
-    <div>
-      <p className="text-muted text-xs font-bold uppercase tracking-widest">{title}</p>
-      <h3 className="text-2xl font-black mt-1">{value}</h3>
-    </div>
-  </div>
-);
+  const stats = [
+    { label: "Threats Blocked", value: "2.4M+", icon: ShieldCheck },
+    { label: "ML Accuracy", value: "99.8%", icon: Brain },
+    { label: "Response Time", value: "<50ms", icon: Clock },
+    { label: "Enterprise Clients", value: "1000+", icon: Globe },
+  ];
 
-const ThreatItem = ({ title, time, severity }: any) => (
-  <div className="flex items-center justify-between p-3 rounded-lg bg-surface/50 border border-border hover:bg-surface transition-colors">
-    <div className="flex items-center gap-3">
-      <div className={`w-2 h-2 rounded-full ${
-        severity === 'Critical' ? 'bg-danger animate-pulse' : 
-        severity === 'High' ? 'bg-warning' : 'bg-secondary'
-      }`} />
-      <div>
-        <p className="text-sm font-bold text-slate-200">{title}</p>
-        <p className="text-[10px] text-muted font-mono uppercase">{time}</p>
-      </div>
-    </div>
-    <button className="p-1.5 hover:bg-white/5 rounded-md text-muted hover:text-primary transition-all">
-      <ArrowUpRight className="w-4 h-4" />
-    </button>
-  </div>
-);
-
-// --- Main Page ---
-
-export default function Dashboard() {
   return (
-    <div className="space-y-8 max-w-[1600px] mx-auto">
-      {/* Header */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black tracking-tighter">Security Overview</h1>
-          <p className="text-muted text-sm tracking-tight">Real-time threat intelligence and system health.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="px-4 py-2 bg-surface border border-border rounded-lg text-xs font-mono">
-            LOGS: <span className="text-primary">STREAMING_LIVE</span>
-          </div>
-          <button className="bg-primary text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-cyan-400 transition-all">
-            Generate Report
-          </button>
-        </div>
-      </header>
-
-      {/* KPI Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard 
-          title="Threats Blocked" 
-          value="1,284" 
-          icon={ShieldCheck} 
-          trend="+12%" 
-          color="text-primary" 
+    <div className="min-h-screen bg-gradient-dark overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
+        <motion.div
+          className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
+          animate={{ y: [0, 30, 0] }}
+          transition={{ duration: 8, repeat: Infinity }}
         />
-        <KPICard 
-          title="Security Score" 
-          value="98.2%" 
-          icon={Activity} 
-          trend="+0.4%" 
-          color="text-success" 
-        />
-        <KPICard 
-          title="URLs Scanned" 
-          value="45,902" 
-          icon={Globe} 
-          trend="+22%" 
-          color="text-secondary" 
-        />
-        <KPICard 
-          title="Critical Alerts" 
-          value="03" 
-          icon={AlertTriangle} 
-          trend="-5%" 
-          color="text-danger" 
+        <motion.div
+          className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
+          animate={{ y: [0, -30, 0] }}
+          transition={{ duration: 10, repeat: Infinity }}
         />
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Active Incidents */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="bg-card border border-border rounded-xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-border bg-surface/30 flex justify-between items-center">
-              <h2 className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-primary" /> Recent Incidents
-              </h2>
-              <span className="text-[10px] text-muted font-bold">LIVE UPDATES</span>
-            </div>
-            <div className="p-4 space-y-3">
-              <ThreatItem title="Suspicious Login Redirect: outlook-verify.net" time="2 mins ago" severity="Critical" />
-              <ThreatItem title="Credential Harvesting detected on /auth/reset" time="14 mins ago" severity="High" />
-              <ThreatItem title="Punycode Domain spoofing attempt: microseft.com" time="45 mins ago" severity="High" />
-              <ThreatItem title="Massive Phishing Campaign: HR_Benefits_Update" time="1 hour ago" severity="Medium" />
-              <ThreatItem title="New Domain Registration: secure-bank-login.xyz" time="3 hours ago" severity="Medium" />
-            </div>
+      {/* Navigation */}
+      <nav className="relative z-50 flex items-center justify-between px-6 py-4">
+        <motion.div
+          className="text-2xl font-bold gradient-text flex items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <ShieldCheck className="w-8 h-8 text-primary" />
+          Sentinel
+        </motion.div>
+        <Link
+          href="/login"
+          className="px-6 py-2 glass hover:bg-white/[0.12] transition-smooth text-sm font-semibold"
+        >
+          Sign In
+        </Link>
+      </nav>
+
+      {/* Hero Section */}
+      <motion.section
+        className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <motion.div
+          className="max-w-4xl text-center space-y-8"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 glass">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">Powered by Advanced AI</span>
           </div>
+
+          <h1 className="text-6xl md:text-7xl font-bold leading-tight">
+            Protect Your Organization from
+            <span className="gradient-text block">Phishing Threats</span>
+          </h1>
+
+          <p className="text-xl text-muted max-w-2xl mx-auto">
+            AI-powered phishing detection that catches threats before they reach your inbox. 
+            Real-time analysis, enterprise-grade security, and actionable intelligence.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <Link
+              href="/dashboard"
+              className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-smooth flex items-center justify-center gap-2"
+            >
+              Launch Platform <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/register"
+              className="px-8 py-4 glass font-semibold rounded-xl hover:bg-white/[0.12] transition-smooth"
+            >
+              Get Started Free
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            {stats.map((stat, idx) => (
+              <div key={idx} className="glass p-4 text-center">
+                <stat.icon className="w-5 h-5 text-primary mx-auto mb-2" />
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <div className="text-xs text-muted">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </motion.section>
+
+      {/* Features Section */}
+      <motion.section
+        className="relative z-10 max-w-7xl mx-auto px-6 py-20"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Powerful Features</h2>
+          <p className="text-muted text-lg max-w-2xl mx-auto">
+            Everything you need to secure your organization against phishing attacks
+          </p>
         </div>
 
-        {/* AI Insight Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <ShieldCheck className="w-24 h-24 text-primary" />
-            </div>
-            <h2 className="text-lg font-black mb-4 flex items-center gap-2 text-primary">
-              AI Copilot Insight
-            </h2>
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
-              "We've detected a 15% increase in <span className="text-warning">Punycode attacks</span> targeting your Finance department. We recommend enabling 'Strict Domain Matching' in your URL Scanner settings."
-            </p>
-            <button className="w-full bg-primary/10 border border-primary/30 text-primary py-2 rounded-lg text-xs font-bold hover:bg-primary hover:text-black transition-all uppercase tracking-widest">
-              Apply Recommendation
-            </button>
-          </div>
-
-          <div className="mt-6 bg-card border border-border rounded-xl p-6">
-            <h3 className="text-xs font-black uppercase tracking-widest text-muted mb-4">Attack Origin Map</h3>
-            <div className="aspect-square rounded-lg bg-surface flex flex-col items-center justify-center border border-border group cursor-crosshair">
-                <div className="w-20 h-20 rounded-full border border-primary/30 animate-ping absolute" />
-                <Globe className="w-12 h-12 text-muted group-hover:text-primary transition-colors" />
-                <p className="text-[10px] text-muted mt-4 font-mono">LAT: 34.05 / LONG: -118.24</p>
-            </div>
-          </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, idx) => (
+            <motion.div
+              key={idx}
+              className="glass p-6 rounded-2xl group hover:border-primary/50 transition-smooth"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="mb-4 inline-block p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-smooth">
+                <feature.icon className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <p className="text-muted text-sm">{feature.description}</p>
+            </motion.div>
+          ))}
         </div>
+      </motion.section>
 
-      </div>
+      {/* CTA Section */}
+      <motion.section
+        className="relative max-w-4xl mx-auto px-6 py-20"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="glass rounded-3xl p-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Secure Your Organization?</h2>
+          <p className="text-muted mb-8 max-w-xl mx-auto">
+            Join thousands of enterprises protecting their teams with Sentinel AI.
+          </p>
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-smooth"
+          >
+            Start Free Trial <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </motion.section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 mt-20 py-8 px-6">
+        <div className="max-w-7xl mx-auto text-center text-muted text-sm">
+          <p>&copy; 2026 Sentinel AI. Advanced Phishing Detection. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }

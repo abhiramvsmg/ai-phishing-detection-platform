@@ -1,15 +1,9 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Dashboard | PhishGuard AI",
-  description:
-    "Enterprise security operations dashboard for AI-powered phishing detection and threat analysis.",
-};
+import { Shell } from "@/components/layout/Shell";
 
 export default function DashboardLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
-  return children;
+}>) {
+  return <Shell>{children}</Shell>;
 }

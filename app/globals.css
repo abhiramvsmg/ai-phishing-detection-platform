@@ -1,28 +1,151 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root { --background: #030712; }
+@theme {
+  --color-bg-main: #0A0E27;
+  --color-bg-card: rgba(15, 26, 63, 0.8);
+  --color-accent-cyan: #00D9FF;
+  --color-accent-blue: #6B5EFF;
+  --color-threat-high: #EF4444;
+  --color-threat-mid: #F59E0B;
+  --color-threat-low: #10B981;
+  --color-gradient-start: #00D9FF;
+  --color-gradient-end: #6B5EFF;
+}
+
+:root {
+  background: var(--color-bg-main);
+  color: #E5E7EB;
+  color-scheme: dark;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+html {
+  @apply h-full;
+}
 
 body {
-  background: radial-gradient(circle at top right, #082f49, #030712); /* Subtle glow like Canva */
-  color: white;
-  min-height: 100vh;
+  @apply h-full overflow-x-hidden;
 }
 
-.glass-card {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem; /* rounded-3xl */
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-.sidebar-glass {
-  background: rgba(3, 7, 18, 0.4);
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-accent-cyan) 0%, var(--color-accent-blue) 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00FFFF 0%, #8B7EFF 100%);
+}
+
+/* Glass Morphism Effects */
+.glass {
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
 }
 
-/* Rounded Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: #06B6D4; border-radius: 10px; }
+.glass-sm {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+}
+
+.glass-lg {
+  backdrop-filter: blur(30px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+}
+
+/* Gradient effects */
+.gradient-text {
+  background: linear-gradient(to right, var(--color-gradient-start), var(--color-accent-blue), var(--color-gradient-start));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  background: linear-gradient(135deg, var(--color-bg-card), var(--color-bg-card)) padding-box, 
+              linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-blue)) border-box;
+  border: 1px solid transparent;
+}
+
+/* Glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(107, 94, 255, 0.3);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.glow-text-purple {
+  text-shadow: 0 0 10px rgba(107, 94, 255, 0.5), 0 0 20px rgba(107, 94, 255, 0.3);
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.3s ease-out;
+}
+
+/* Cyber Grid Background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 217, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 217, 255, 0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 90%);
+}
+
+/* AI Glass cards */
+.ai-glass {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 217, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ai-glass:hover {
+  border-color: rgba(0, 217, 255, 0.2);
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.15);
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
