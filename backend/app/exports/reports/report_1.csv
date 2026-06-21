@@ -1,0 +1,5 @@
+report_id,report_type,details,created_at
+1,SCAN_REPORT,"URL: https://google-security-check.xyz
+Result: SAFE
+Risk Score: 10
+Risk Level: LOW",2026-06-19 16:56:34.566623
