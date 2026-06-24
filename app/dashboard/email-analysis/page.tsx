@@ -118,7 +118,7 @@ export default function EmailAnalysisPage() {
                     <ul className="space-y-4 text-xs font-medium">
                       <li className="flex gap-3 text-slate-300 items-start">
                         <div className="w-1.5 h-1.5 bg-rose-500 rounded-full mt-1.5 shrink-0" />
-                        Homograph domain attack: "rnicrosoft.com" instead of "microsoft.com"
+                        Homograph domain attack: &quot;rnicrosoft.com&quot; instead of &quot;microsoft.com&quot;
                       </li>
                       <li className="flex gap-3 text-slate-300 items-start">
                         <div className="w-1.5 h-1.5 bg-rose-500 rounded-full mt-1.5 shrink-0" />
@@ -211,7 +211,7 @@ export default function EmailAnalysisPage() {
                       <AlertCircle className="w-4 h-4 text-amber-500" /> Psychological Trigger
                     </div>
                     <p className="text-xs text-slate-400 bg-slate-950/50 p-3 rounded-xl border border-slate-800">
-                      "Immediate action required" - Classic time-pressure stressor used to bypass cognitive critical thinking.
+                      &quot;Immediate action required&quot; - Classic time-pressure stressor used to bypass cognitive critical thinking.
                     </p>
                   </div>
                   <div>

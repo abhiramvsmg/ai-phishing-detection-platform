@@ -191,7 +191,7 @@ function KPICard({
 }: {
   label: string;
   value: string;
-  icon: React.ComponentType<any>;
+  icon: React.ElementType;
   trend: string;
   color: string;
 }) {

@@ -9,7 +9,13 @@ export default function ScannerPage() {
   const [scanning, setScanning] = useState(false);
   const [complete, setComplete] = useState(false);
   const [url, setUrl] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{
+  verdict: "MALICIOUS" | "SAFE" | "ERROR";
+  confidence: number;
+  threats: unknown[];
+  metrics: unknown[];
+  error?: string;
+} | null>(null);
 
   const startScan = async (e: React.FormEvent) => {
     e.preventDefault();

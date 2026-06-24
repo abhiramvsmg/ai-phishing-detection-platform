@@ -148,7 +148,7 @@ export default function TeamPage() {
               <ShieldAlert className="w-10 h-10 text-rose-500 mb-4" />
               <h4 className="text-lg font-black mb-2 uppercase tracking-tighter">Security Alert</h4>
               <p className="text-xs text-slate-400 leading-relaxed mb-4 italic">
-                Analysts "David Kim" and "Marcus Thorne" are not currently using FIDO2 Hardware keys. This violates internal SOC policy v2.1.
+                Analysts &quot;David Kim&quot; and &quot;Marcus Thorne&quot; are not currently using FIDO2 Hardware keys. This violates internal SOC policy v2.1.
               </p>
               <button className="text-[10px] font-black text-rose-500 uppercase flex items-center gap-1 hover:underline">
                 Enforce MFA Policy <ArrowUpRight className="w-3 h-3" />

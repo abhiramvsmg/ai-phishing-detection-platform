@@ -77,7 +77,7 @@ export default function ReportsPage() {
             <div className="mt-8 p-6 rounded-3xl bg-slate-900/60 border border-slate-800">
               <BarChart2 className="w-8 h-8 text-blue-500 mb-4" />
               <h4 className="font-bold text-sm mb-2">Auto-Generation</h4>
-              <p className="text-xs text-slate-500 leading-relaxed mb-4">Your "Weekly Threat Matrix" is scheduled to generate in 2 days.</p>
+              <p className="text-xs text-slate-500 leading-relaxed mb-4">Your &quot;Weekly Threat Matrix&quot; is scheduled to generate in 2 days.</p>
               <button className="text-[10px] font-black text-blue-400 uppercase flex items-center gap-1 hover:underline">
                 Manage Schedule <ArrowRight className="w-3 h-3" />
               </button>

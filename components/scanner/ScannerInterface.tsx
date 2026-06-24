@@ -207,7 +207,7 @@ export function ScannerInterface() {
               </div>
               
               <p className="text-slate-400 text-sm leading-relaxed italic">
-                "{result.details.aiVerdict}"
+                &quot;{result.details.aiVerdict}&quot;
               </p>
             </div>
 
@@ -275,7 +275,7 @@ export function ScannerInterface() {
   );
 }
 
-function IndicatorRow({ icon, label, status, value }: { icon: any, label: string, status: 'safe' | 'fail', value: string }) {
+function IndicatorRow({ icon, label, status, value }: { icon: React.ReactNode, label: string, status: 'safe' | 'fail', value: string }) {
   return (
     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
       <div className="flex items-center gap-3">

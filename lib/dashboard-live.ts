@@ -62,9 +62,7 @@ export async function fetchScanHistory(): Promise<ScanRecord[]> {
   return results.map(toScanRecord);
 }
 
-export async function fetchRealThreatStats(): Promise
-  Pick<ThreatStat, "id" | "value">[]
-> {
+export async function fetchRealThreatStats(): Promise<Pick<ThreatStat, "id" | "value">[]> {
   const stats = await api.dashboard.stats();
   return [
     { id: "scans-today", value: stats.total_scans },
