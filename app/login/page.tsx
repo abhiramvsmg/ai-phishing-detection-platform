@@ -20,7 +20,7 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -30,7 +30,7 @@ export default function Login() {
     }
 
     setIsSubmitting(true);
-    const result = signInUser(formData.email, formData.password);
+    const result = await signInUser(formData.email, formData.password);
 
     if (!result.ok) {
       setError(result.message);

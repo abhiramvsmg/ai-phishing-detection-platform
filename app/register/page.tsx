@@ -26,9 +26,7 @@ export default function Register() {
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {    e.preventDefault();
     setError("");
 
     if (!formData.fullName.trim() || !formData.email.trim() || !formData.company.trim()) {
@@ -52,7 +50,7 @@ export default function Register() {
     }
 
     setIsSubmitting(true);
-    const result = registerUser({
+   const result = await registerUser({
       fullName: formData.fullName,
       email: formData.email,
       company: formData.company,

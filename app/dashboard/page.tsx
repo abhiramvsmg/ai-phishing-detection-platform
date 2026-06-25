@@ -3,11 +3,49 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Brain, Shield, AlertTriangle, Zap } from "lucide-react";
 import { motion } from "framer-motion";
+import { api } from "@/lib/api";
+
+interface RecentThreat {
+  title: string;
+  time: string;
+  severity: string;
+  details: string;
+}
 
 export default function Dashboard() {
+  const [phishingCount, setPhishingCount] = useState<number | null>(null);
+  const [recentThreats, setRecentThreats] = useState<RecentThreat[] | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.dashboard
+      .stats()
+      .then((stats) => setPhishingCount(stats.phishing_scans))
+      .catch((err) => setLoadError(err.message ?? "Failed to load stats"));
+
+    api.dashboard
+      .recentScans()
+      .then((scans) => {
+        const mapped: RecentThreat[] = scans.slice(0, 4).map((scan) => ({
+          title: `${scan.scan_type}: ${scan.result === "PHISHING" ? "Flagged" : "Scanned"}`,
+          time: new Date(scan.created_at).toLocaleString(),
+          severity:
+            scan.risk_level === "CRITICAL"
+              ? "Critical"
+              : scan.risk_level === "HIGH"
+              ? "High"
+              : scan.risk_level === "MEDIUM"
+              ? "Medium"
+              : "Safe",
+          details: scan.content,
+        }));
+        setRecentThreats(mapped);
+      })
+      .catch((err) => setLoadError(err.message ?? "Failed to load recent scans"));
+  }, []);
+
   return (
     <div className="space-y-8">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -17,7 +55,12 @@ export default function Dashboard() {
         <p className="text-muted">Real-time threat detection and analysis</p>
       </motion.div>
 
-      {/* KPI Cards */}
+      {loadError && (
+        <p className="text-sm text-danger bg-danger/10 border border-danger/20 rounded-lg px-4 py-3">
+          {loadError} — log in first, or check the backend is running.
+        </p>
+      )}
+
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         initial="hidden"
@@ -27,39 +70,37 @@ export default function Dashboard() {
           show: { transition: { staggerChildren: 0.1 } },
         }}
       >
-        <KPICard 
-          label="Threats Blocked" 
-          value="2,847" 
+        <KPICard
+          label="Threats Blocked"
+          value={phishingCount !== null ? String(phishingCount) : "—"}
           icon={Shield}
-          trend="+23%"
+          trend={phishingCount !== null ? "Live" : "..."}
           color="text-success"
         />
-        <KPICard 
-          label="AI Confidence" 
-          value="99.8%" 
+        <KPICard
+          label="AI Confidence"
+          value="99.8%"
           icon={Brain}
           trend="↑ Excellent"
           color="text-primary"
         />
-        <KPICard 
-          label="Active Incidents" 
-          value="12" 
+        <KPICard
+          label="Active Incidents"
+          value="12"
           icon={AlertTriangle}
           trend="3 Critical"
           color="text-warning"
         />
-        <KPICard 
-          label="Avg Response" 
-          value="45ms" 
+        <KPICard
+          label="Avg Response"
+          value="45ms"
           icon={Zap}
           trend="-12ms"
           color="text-primary"
         />
       </motion.div>
 
-      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Threat Activity Chart */}
         <motion.div
           className="lg:col-span-2 glass rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
@@ -71,7 +112,7 @@ export default function Dashboard() {
               <h2 className="text-lg font-semibold mb-1">Threat Activity</h2>
               <p className="text-xs text-muted">Last 24 hours monitoring</p>
             </div>
-            <motion.div 
+            <motion.div
               className="flex items-center gap-2 text-xs font-semibold text-success"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
@@ -84,7 +125,6 @@ export default function Dashboard() {
           <ThreatChart />
         </motion.div>
 
-        {/* AI Insights */}
         <motion.div
           className="glass rounded-2xl p-6"
           initial={{ opacity: 0, y: 20 }}
@@ -134,7 +174,6 @@ export default function Dashboard() {
         </motion.div>
       </div>
 
-      {/* Recent Threats */}
       <motion.div
         className="glass rounded-2xl p-6"
         initial={{ opacity: 0, y: 20 }}
@@ -142,52 +181,67 @@ export default function Dashboard() {
         transition={{ delay: 0.4 }}
       >
         <h2 className="text-lg font-semibold mb-4">Recent Threats</h2>
-        
-        <div className="space-y-3">
-          {[
-            { title: "Phishing: Office 365 Clone", time: "2 mins ago", severity: "Critical", details: "Target: Finance Team" },
-            { title: "Malware: Trojan Detected", time: "15 mins ago", severity: "High", details: "File: invoice_2024.exe" },
-            { title: "Suspicious Login: New IP", time: "1 hour ago", severity: "Medium", details: "From: 185.220.101.45" },
-            { title: "URL Scanning: Malicious Domain", time: "2 hours ago", severity: "High", details: "Domain: secure-microsoft.fake" },
-          ].map((threat, idx) => (
-            <motion.div
-              key={idx}
-              className="flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-smooth"
-              whileHover={{ x: 4 }}
-            >
-              <div className="flex items-center gap-3 flex-1">
-                <div className={`w-2.5 h-2.5 rounded-full ${
-                  threat.severity === "Critical" ? "bg-danger animate-pulse" :
-                  threat.severity === "High" ? "bg-warning" : "bg-secondary"
-                }`} />
-                <div className="flex-1">
-                  <p className="text-sm font-semibold">{threat.title}</p>
-                  <p className="text-xs text-muted">{threat.details}</p>
+
+        {recentThreats === null ? (
+          <p className="text-sm text-muted">Loading recent activity...</p>
+        ) : recentThreats.length === 0 ? (
+          <p className="text-sm text-muted">No scans yet. Run a scan to see activity here.</p>
+        ) : (
+          <div className="space-y-3">
+            {recentThreats.map((threat, idx) => (
+              <motion.div
+                key={idx}
+                className="flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-smooth"
+                whileHover={{ x: 4 }}
+              >
+                <div className="flex items-center gap-3 flex-1">
+                  <div
+                    className={`w-2.5 h-2.5 rounded-full ${
+                      threat.severity === "Critical"
+                        ? "bg-danger animate-pulse"
+                        : threat.severity === "High"
+                        ? "bg-warning"
+                        : threat.severity === "Safe"
+                        ? "bg-success"
+                        : "bg-secondary"
+                    }`}
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold">{threat.title}</p>
+                    <p className="text-xs text-muted">{threat.details}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="text-right">
-                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                  threat.severity === "Critical" ? "bg-danger/20 text-danger" :
-                  threat.severity === "High" ? "bg-warning/20 text-warning" : "bg-secondary/20 text-secondary"
-                }`}>
-                  {threat.severity}
-                </span>
-                <p className="text-xs text-muted mt-1">{threat.time}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div className="text-right">
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                      threat.severity === "Critical"
+                        ? "bg-danger/20 text-danger"
+                        : threat.severity === "High"
+                        ? "bg-warning/20 text-warning"
+                        : threat.severity === "Safe"
+                        ? "bg-success/20 text-success"
+                        : "bg-secondary/20 text-secondary"
+                    }`}
+                  >
+                    {threat.severity}
+                  </span>
+                  <p className="text-xs text-muted mt-1">{threat.time}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </motion.div>
     </div>
   );
 }
 
-function KPICard({ 
-  label, 
-  value, 
-  icon: Icon, 
-  trend, 
-  color 
+function KPICard({
+  label,
+  value,
+  icon: Icon,
+  trend,
+  color
 }: {
   label: string;
   value: string;

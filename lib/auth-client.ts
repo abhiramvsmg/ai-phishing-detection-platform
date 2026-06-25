@@ -1,3 +1,5 @@
+import { api } from "@/lib/api";
+
 export type AuthUser = {
   id: string;
   fullName: string;
@@ -114,43 +116,67 @@ export const getSession = (): AuthSession | null => {
   }
 };
 
-export const registerUser = (details: {
+export const registerUser = async (details: {
   fullName: string;
   email: string;
   company: string;
   password: string;
 }) => {
-  const users = readUsers();
   const email = normalizeEmail(details.email);
-  const existingUser = users.find((user) => normalizeEmail(user.email) === email);
 
-  if (existingUser) {
-    return { ok: false, message: "An account with this email already exists." };
+  try {
+    await api.auth.register({
+      name: details.fullName.trim(),
+      email,
+      password: details.password,
+    });
+  } catch (err) {
+    return {
+      ok: false,
+      message: err instanceof Error ? err.message : "Could not create account.",
+    };
+  }
+
+  try {
+    await api.auth.login({ email, password: details.password });
+  } catch {
+    // Registered but auto-login failed - not fatal
   }
 
   const user: AuthUser = {
-    id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    id: email,
     fullName: details.fullName.trim(),
     email,
     company: details.company.trim(),
     password: details.password,
   };
 
+  const users = readUsers();
   writeUsers([...users, user]);
   createSession(user);
 
   return { ok: true, message: "Account created." };
 };
 
-export const signInUser = (email: string, password: string) => {
-  const users = readUsers();
-  const user = users.find((candidate) => normalizeEmail(candidate.email) === normalizeEmail(email));
-
-  if (!user || user.password !== password) {
-    return { ok: false, message: "Email or password is incorrect." };
+export const signInUser = async (email: string, password: string) => {
+  try {
+    await api.auth.login({ email, password });
+  } catch (err) {
+    return {
+      ok: false,
+      message: err instanceof Error ? err.message : "Email or password is incorrect.",
+    };
   }
 
-  createSession(user);
+  const fakeUser: AuthUser = {
+    id: email,
+    fullName: email.split("@")[0],
+    email,
+    company: "",
+    password,
+  };
+  createSession(fakeUser);
+
   return { ok: true, message: "Signed in." };
 };
 

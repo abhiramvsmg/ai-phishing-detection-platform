@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Loader2, ShieldCheck, AlertTriangle, Globe, Brain, Check, Copy } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function ScannerPage() {
   const [scanning, setScanning] = useState(false);
@@ -10,37 +11,40 @@ export default function ScannerPage() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState<any>(null);
 
-  const startScan = (e: React.FormEvent) => {
+const startScan = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("SCAN BUTTON CLICKED, url is:", url);
     if (!url) return;
     setScanning(true);
     setComplete(false);
-    
-    // Simulate AI scanning
-    setTimeout(() => {
+
+    try {
+      console.log("About to call API...");
+      const scan = await api.scans.scanUrl({ url });
+      console.log("API call succeeded, result:", scan);
+
       setResult({
-        verdict: "MALICIOUS",
-        confidence: 94,
-        threats: [
-          { type: "Phishing", severity: "Critical", details: "Mimics Microsoft login page" },
-          { type: "Credential Harvesting", severity: "High", details: "Hidden form fields detected" },
-          { type: "Domain Spoofing", severity: "High", details: "Domain registered 14 days ago" },
-        ],
-        metrics: [
-          { label: "Domain Age", value: "14 days", risk: "CRITICAL" },
-          { label: "SSL Certificate", value: "Self-Signed", risk: "HIGH" },
-          { label: "IP Reputation", value: "Blocked", risk: "CRITICAL" },
-          { label: "Content Analysis", value: "Malicious", risk: "HIGH" },
-        ]
+        verdict: scan.result === "PHISHING" ? "MALICIOUS" : "SAFE",
+        confidence: scan.risk_score,
+        threats: [],
+        metrics: [],
       });
+    } catch (err) {
+      console.log("API call FAILED:", err);
+      setResult({
+        verdict: "ERROR",
+        confidence: 0,
+        threats: [],
+        metrics: [],
+        error: err instanceof Error ? err.message : "Scan failed. Are you logged in?",
+      });
+    } finally {
       setScanning(false);
       setComplete(true);
-    }, 3000);
+    }
   };
-
   return (
     <div className="space-y-6">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -50,9 +54,8 @@ export default function ScannerPage() {
         <p className="text-muted">Advanced AI-powered threat detection and analysis</p>
       </motion.div>
 
-      {/* Scanner Form */}
-      <motion.form 
-        onSubmit={startScan} 
+      <motion.form
+        onSubmit={startScan}
         className="glass rounded-2xl p-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -62,7 +65,7 @@ export default function ScannerPage() {
         <div className="flex gap-3">
           <div className="flex-1 relative">
             <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
-            <input 
+            <input
               type="url"
               className="w-full pl-12 pr-4 py-3 glass-sm bg-white/[0.05] focus:bg-white/[0.08] focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth placeholder:text-muted"
               placeholder="https://example.com"
@@ -71,7 +74,7 @@ export default function ScannerPage() {
               disabled={scanning}
             />
           </div>
-          <motion.button 
+          <motion.button
             type="submit"
             disabled={scanning || !url}
             className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-smooth flex items-center gap-2 disabled:opacity-50"
@@ -94,29 +97,28 @@ export default function ScannerPage() {
       </motion.form>
 
       <AnimatePresence mode="wait">
-        {/* Scanning State */}
         {scanning && (
-          <motion.div 
+          <motion.div
             key="scanning"
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             className="glass rounded-2xl p-12 flex flex-col items-center justify-center min-h-64"
           >
-            <motion.div 
+            <motion.div
               className="mb-6 relative"
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             >
               <Brain className="w-16 h-16 text-primary" />
             </motion.div>
-            
+
             <div className="text-center space-y-3">
               <h3 className="text-xl font-semibold">Scanning URL</h3>
               <p className="text-muted">Analyzing with AI threat detection engine...</p>
               <div className="flex gap-2 justify-center pt-4">
-                {[1,2,3].map(i => (
-                  <motion.div 
+                {[1, 2, 3].map((i) => (
+                  <motion.div
                     key={i}
                     animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 0.8, delay: i * 0.1, repeat: Infinity }}
@@ -128,16 +130,14 @@ export default function ScannerPage() {
           </motion.div>
         )}
 
-        {/* Results State */}
         {complete && result && (
-          <motion.div 
+          <motion.div
             key="complete"
-            initial={{ opacity: 0, y: 20 }} 
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             className="space-y-6"
           >
-            {/* URL Display */}
             <motion.div
               className="glass rounded-2xl p-6"
               initial={{ opacity: 0 }}
@@ -153,118 +153,99 @@ export default function ScannerPage() {
               </div>
             </motion.div>
 
-            {/* Verdict */}
             <motion.div
               className={`glass rounded-2xl p-8 border-t-4 ${
-                result.verdict === "MALICIOUS" ? "border-t-danger" : 
-                result.verdict === "SUSPICIOUS" ? "border-t-warning" : "border-t-success"
+                result.verdict === "MALICIOUS"
+                  ? "border-t-danger"
+                  : result.verdict === "ERROR"
+                  ? "border-t-warning"
+                  : "border-t-success"
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className={`p-3 rounded-lg ${
-                  result.verdict === "MALICIOUS" ? "bg-danger/10" : 
-                  result.verdict === "SUSPICIOUS" ? "bg-warning/10" : "bg-success/10"
-                }`}>
+                <div
+                  className={`p-3 rounded-lg ${
+                    result.verdict === "MALICIOUS"
+                      ? "bg-danger/10"
+                      : result.verdict === "ERROR"
+                      ? "bg-warning/10"
+                      : "bg-success/10"
+                  }`}
+                >
                   {result.verdict === "MALICIOUS" ? (
                     <AlertTriangle className="w-8 h-8 text-danger" />
-                  ) : result.verdict === "SUSPICIOUS" ? (
+                  ) : result.verdict === "ERROR" ? (
                     <AlertTriangle className="w-8 h-8 text-warning" />
                   ) : (
                     <Check className="w-8 h-8 text-success" />
                   )}
                 </div>
                 <div>
-                  <p className={`text-3xl font-bold ${
-                    result.verdict === "MALICIOUS" ? "text-danger" : 
-                    result.verdict === "SUSPICIOUS" ? "text-warning" : "text-success"
-                  }`}>
+                  <p
+                    className={`text-3xl font-bold ${
+                      result.verdict === "MALICIOUS"
+                        ? "text-danger"
+                        : result.verdict === "ERROR"
+                        ? "text-warning"
+                        : "text-success"
+                    }`}
+                  >
                     {result.verdict}
                   </p>
-                  <p className="text-sm text-muted">Threat Level: {result.verdict}</p>
+                  <p className="text-sm text-muted">
+                    {result.verdict === "ERROR" ? result.error : `Threat Level: ${result.verdict}`}
+                  </p>
                 </div>
               </div>
 
-              <div className="space-y-2 mb-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-semibold">AI Confidence Score</span>
-                  <span className="text-lg font-bold text-primary">{result.confidence}%</span>
+              {result.verdict !== "ERROR" && (
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold">Risk Score</span>
+                    <span className="text-lg font-bold text-primary">{result.confidence}%</span>
+                  </div>
+                  <motion.div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-primary to-danger"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${result.confidence}%` }}
+                      transition={{ delay: 0.3, duration: 0.8 }}
+                    />
+                  </motion.div>
                 </div>
-                <motion.div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-primary to-danger"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${result.confidence}%` }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                  />
-                </motion.div>
-              </div>
+              )}
             </motion.div>
 
-            {/* Threats Detected */}
-            {result.threats.length > 0 && (
-              <motion.div
-                className="glass rounded-2xl p-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-warning" />
-                  Threats Detected
-                </h3>
-                
-                <div className="space-y-3">
-                  {result.threats.map((threat: any, idx: number) => (
-                    <motion.div
-                      key={idx}
-                      className="p-4 bg-white/5 border border-white/10 rounded-lg hover:border-warning/50 transition-smooth"
-                      whileHover={{ x: 4 }}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-semibold text-warning">{threat.type}</h4>
-                        <span className={`text-xs font-semibold px-2 py-1 rounded ${
-                          threat.severity === "Critical" ? "bg-danger/20 text-danger" :
-                          threat.severity === "High" ? "bg-warning/20 text-warning" : "bg-secondary/20 text-secondary"
-                        }`}>
-                          {threat.severity}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted">{threat.details}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+            {result.verdict !== "ERROR" && (
+              <>
+                <motion.div
+                  className="glass rounded-2xl p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-warning" />
+                    Threats Detected
+                  </h3>
+                  <p className="text-sm text-muted">Detailed threat breakdown coming soon.</p>
+                </motion.div>
+
+                <motion.div
+                  className="glass rounded-2xl p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <h3 className="text-lg font-semibold mb-2">Analysis Metrics</h3>
+                  <p className="text-sm text-muted">Detailed analysis metrics coming soon.</p>
+                </motion.div>
+              </>
             )}
 
-            {/* Analysis Metrics */}
-            <motion.div
-              className="glass rounded-2xl p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <h3 className="text-lg font-semibold mb-4">Analysis Metrics</h3>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {result.metrics.map((metric: any, idx: number) => (
-                  <div key={idx} className="p-4 bg-white/5 rounded-lg border border-white/10">
-                    <p className="text-xs text-muted font-semibold uppercase mb-2">{metric.label}</p>
-                    <p className="text-sm font-semibold mb-3">{metric.value}</p>
-                    <span className={`text-xs font-semibold px-2 py-1 rounded ${
-                      metric.risk === "CRITICAL" ? "bg-danger/20 text-danger" :
-                      metric.risk === "HIGH" ? "bg-warning/20 text-warning" : "bg-secondary/20 text-secondary"
-                    }`}>
-                      {metric.risk}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Action Buttons */}
             <motion.div
               className="flex gap-3"
               initial={{ opacity: 0 }}
@@ -277,8 +258,11 @@ export default function ScannerPage() {
               <button className="flex-1 py-3 bg-danger/20 hover:bg-danger/30 text-danger font-semibold rounded-lg transition-smooth">
                 Block Domain
               </button>
-              <button 
-                onClick={() => { setComplete(false); setUrl(""); }}
+              <button
+                onClick={() => {
+                  setComplete(false);
+                  setUrl("");
+                }}
                 className="flex-1 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-smooth"
               >
                 Scan Another
@@ -287,7 +271,6 @@ export default function ScannerPage() {
           </motion.div>
         )}
 
-        {/* Empty State */}
         {!scanning && !complete && (
           <motion.div
             key="empty"
