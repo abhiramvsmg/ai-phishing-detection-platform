@@ -49,6 +49,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
+# Create FastAPI App
+app = FastAPI(
+    title="AI Phishing Detection Platform",
+    version="1.0.0"
+)
+
+# Allow the Next.js frontend (localhost:3000) to call this API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Register Routers
 app.include_router(auth_router)
 app.include_router(users_router)
