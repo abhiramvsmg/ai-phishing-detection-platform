@@ -1,27 +1,21 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Shield, 
-  Activity, 
-  TrendingUp, 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Globe, 
+import {
+  Shield,
+  Activity,
+  TrendingUp,
+  ArrowUpRight,
+  ArrowDownRight,
+  Globe,
   AlertTriangle,
   Calendar,
   Filter,
   Download,
   Target
 } from 'lucide-react';
-
-const analyticsStats = [
-  { label: "Total Emails Scanned", value: "1,284,502", change: "+12.5%", trend: "up", icon: Activity, color: "text-blue-400" },
-  { label: "Malicious Blocked", value: "42,891", change: "+8.2%", trend: "up", icon: Shield, color: "text-emerald-400" },
-  { label: "Average Risk Score", value: "24/100", change: "-4.1%", trend: "down", icon: AlertTriangle, color: "text-amber-400" },
-  { label: "Detection Accuracy", value: "99.98%", change: "+0.02%", trend: "up", icon: Target, color: "text-purple-400" },
-];
+import { api } from '@/lib/api';
 
 const topAttackedDomains = [
   { domain: "corp-finance.net", attempts: "12,402", risk: "Critical", status: "Protected" },
@@ -31,10 +25,31 @@ const topAttackedDomains = [
 ];
 
 export default function AnalyticsPage() {
+  const [totalScans, setTotalScans] = useState<number | null>(null);
+  const [phishingScans, setPhishingScans] = useState<number | null>(null);
+
+  useEffect(() => {
+    api.dashboard
+      .stats()
+      .then((stats) => {
+        setTotalScans(stats.total_scans);
+        setPhishingScans(stats.phishing_scans);
+      })
+      .catch(() => {
+        // real stats unavailable — keep mock fallback below
+      });
+  }, []);
+
+  const analyticsStats = [
+    { label: "Total Emails Scanned", value: totalScans !== null ? totalScans.toLocaleString() : "1,284,502", change: "+12.5%", trend: "up", icon: Activity, color: "text-blue-400" },
+    { label: "Malicious Blocked", value: phishingScans !== null ? phishingScans.toLocaleString() : "42,891", change: "+8.2%", trend: "up", icon: Shield, color: "text-emerald-400" },
+    { label: "Average Risk Score", value: "24/100", change: "-4.1%", trend: "down", icon: AlertTriangle, color: "text-amber-400" },
+    { label: "Detection Accuracy", value: "99.98%", change: "+0.02%", trend: "up", icon: Target, color: "text-purple-400" },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-6 lg:p-10">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Page Header */}
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
@@ -52,7 +67,6 @@ export default function AnalyticsPage() {
           </div>
         </header>
 
-        {/* KPI Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {analyticsStats.map((stat, i) => (
             <motion.div
@@ -78,8 +92,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Chart Area */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             className="lg:col-span-2 p-6 rounded-3xl bg-slate-900/40 border border-slate-800"
@@ -95,11 +108,10 @@ export default function AnalyticsPage() {
                 ))}
               </div>
             </div>
-            {/* Visual Bars Mockup */}
             <div className="h-64 flex items-end justify-between gap-2 px-2">
               {[42, 65, 35, 82, 54, 91, 72, 88, 62, 75, 98, 81].map((h, i) => (
                 <div key={i} className="flex-1 group relative">
-                  <motion.div 
+                  <motion.div
                     initial={{ height: 0 }}
                     animate={{ height: `${h}%` }}
                     transition={{ duration: 1.5, delay: i * 0.05, ease: "circOut" }}
@@ -116,8 +128,7 @@ export default function AnalyticsPage() {
             </div>
           </motion.div>
 
-          {/* Risk Distribution */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="p-6 rounded-3xl bg-slate-900/40 border border-slate-800 flex flex-col justify-between"
@@ -140,7 +151,7 @@ export default function AnalyticsPage() {
                       <span className="text-white">{item.val}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                      <motion.div 
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${item.val}%` }}
                         transition={{ duration: 1, delay: 0.5 }}
@@ -163,8 +174,7 @@ export default function AnalyticsPage() {
           </motion.div>
         </div>
 
-        {/* Top Attacked Domains Table */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="rounded-3xl bg-slate-900/40 border border-slate-800 overflow-hidden"
