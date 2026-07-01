@@ -10,28 +10,11 @@ import {
   ApiError,
 } from "@/lib/types";
 
-/**
- * Base URL for the FastAPI backend.
- *
- * IMPORTANT: this is 8001, not 8000 — Splunk's daemon (splunkd)
- * occupies port 8000 on this machine, so the backend is run with
- * `uvicorn main:app --reload --port 8001`. If a teammate's machine
- * doesn't have that conflict, they'd run on 8000 and need to
- * override this via NEXT_PUBLIC_API_BASE_URL in .env.local instead
- * of changing this file.
- */
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8001";
 
 const TOKEN_KEY = "phishguard_token";
 
-/**
- * Token storage. Plain localStorage for now — fine for local dev
- * and a student project. If this ships to real users, move to an
- * httpOnly cookie set by a Next.js route handler instead, since
- * localStorage tokens are readable by any script on the page (XSS
- * risk).
- */
 export const tokenStore = {
   get(): string | null {
     if (typeof window === "undefined") return null;
@@ -48,7 +31,7 @@ export const tokenStore = {
 interface RequestOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: unknown;
-  auth?: boolean; // attach Authorization header if true
+  auth?: boolean;
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -61,7 +44,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (auth) {
     const token = tokenStore.get();
     if (!token) {
-      throw new ApiError("Not authenticated — no token found", 401);
+      throw new ApiError("Not authenticated - no token found", 401);
     }
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -74,9 +57,6 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
-    // fetch itself throws on network failure (server down, CORS
-    // block before any response, etc.) — distinguish this from a
-    // normal HTTP error status below.
     throw new ApiError(
       "Could not reach the server. Is the backend running on " + API_BASE_URL + "?",
       0
@@ -89,7 +69,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       const errBody = await res.json();
       detail = errBody.detail ?? detail;
     } catch {
-      // response wasn't JSON — keep statusText
+      // response wasn't JSON - keep statusText
     }
     throw new ApiError(
       typeof detail === "string" ? detail : JSON.stringify(detail),
@@ -97,16 +77,19 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     );
   }
 
-  // Some endpoints (e.g. register) return 201 with a small body;
-  // guard against an empty body breaking .json()
   const text = await res.text();
   return text ? JSON.parse(text) : (undefined as T);
 }
 
-/**
- * All methods here are verified directly against the backend's
- * live Swagger /docs responses, not assumed from the README.
- */
+export interface ReportRecord {
+  id: number;
+  report_type: string;
+  created_at: string;
+  user_id: number;
+  scan_id: number;
+  details: string;
+}
+
 export const api = {
   auth: {
     register: (data: RegisterRequest) =>
@@ -143,6 +126,17 @@ export const api = {
         body: data,
         auth: true,
       }),
+  },
+
+  reports: {
+    generate: (scanId: number) =>
+      request<unknown>(`/api/v1/reports/generate/${scanId}`, {
+        method: "POST",
+        auth: true,
+      }),
+
+    list: () =>
+      request<ReportRecord[]>("/api/v1/reports", { auth: true }),
   },
 
   dashboard: {
