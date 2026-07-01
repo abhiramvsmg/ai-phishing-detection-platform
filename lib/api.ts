@@ -136,6 +136,13 @@ export const api = {
         body: data,
         auth: true,
       }),
+
+    scanEmail: (data: { email_text: string }) =>
+      request<ScanResult>("/api/v1/scans/email", {
+        method: "POST",
+        body: data,
+        auth: true,
+      }),
   },
 
   dashboard: {
