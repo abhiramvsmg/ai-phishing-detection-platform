@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  User, 
-  Lock, 
-  Cpu, 
-  Globe, 
-  Shield, 
-  Zap, 
+import {
+  User,
+  Lock,
+  Cpu,
+  Globe,
+  Shield,
+  Zap,
   Check,
   Smartphone,
   CreditCard,
@@ -37,15 +37,14 @@ export default function SettingsPage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Navigation Sidebar */}
           <div className="lg:col-span-4 space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-bold transition-all border ${
-                  activeTab === item.id 
-                  ? 'bg-blue-600 text-white border-blue-500 shadow-xl shadow-blue-600/20' 
+                  activeTab === item.id
+                  ? 'bg-blue-600 text-white border-blue-500 shadow-xl shadow-blue-600/20'
                   : 'text-slate-400 hover:bg-slate-900 border-transparent hover:border-slate-800'
                 }`}
               >
@@ -55,9 +54,8 @@ export default function SettingsPage() {
             ))}
           </div>
 
-          {/* Settings Content Area */}
           <div className="lg:col-span-8">
-            <motion.div 
+            <motion.div
               key={activeTab}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -138,8 +136,8 @@ export default function SettingsPage() {
                       <div className="absolute inset-0 bg-blue-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                       <div className="relative p-5 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-between overflow-hidden">
                         <div>
-                          <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Production API Key</p>
-                          <code className="text-sm font-mono text-blue-300">sk_live_8829_42xk_forensics_secure</code>
+                          <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1">Demo API Key (not functional)</p>
+                          <code className="text-sm font-mono text-blue-300">demo_key_not_functional_8829</code>
                         </div>
                         <button className="p-3 bg-slate-900 hover:bg-slate-800 rounded-xl transition-all">
                           <Check className="w-4 h-4 text-emerald-500" />
@@ -168,10 +166,16 @@ export default function SettingsPage() {
                 </div>
               )}
 
-              {/* General footer for all tabs */}
+              {(activeTab === 'profile' || activeTab === 'notifications' || activeTab === 'billing') && (
+                <div className="py-16 text-center">
+                  <p className="text-sm text-slate-500 font-bold uppercase tracking-widest">Not yet available</p>
+                  <p className="text-xs text-slate-600 mt-2">This section is planned for a future release.</p>
+                </div>
+              )}
+
               <div className="mt-12 pt-10 border-t border-slate-800 flex items-center justify-between">
                 <p className="text-[10px] text-slate-600 font-black uppercase tracking-widest italic">
-                  Last system-wide save: Today at 14:42 UTC
+                  Demo mode — settings are not persisted
                 </p>
                 <button className="px-10 py-4 bg-blue-600 hover:bg-blue-500 rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-blue-600/20">
                   Persist Changes
