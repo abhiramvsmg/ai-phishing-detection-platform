@@ -90,6 +90,16 @@ export interface ReportRecord {
   details: string;
 }
 
+export interface AdminUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export const api = {
   auth: {
     register: (data: RegisterRequest) =>
@@ -137,6 +147,11 @@ export const api = {
 
     list: () =>
       request<ReportRecord[]>("/api/v1/reports", { auth: true }),
+  },
+
+  admin: {
+    listUsers: () =>
+      request<AdminUser[]>("/api/v1/admin/users", { auth: true }),
   },
 
   dashboard: {
