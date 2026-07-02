@@ -1,3 +1,4 @@
+from app.services.explanation_service import generate_explanation
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -120,3 +121,24 @@ def get_scan_by_id_api(
         )
 
     return scan
+@router.get("/{scan_id}/explain")
+def explain_scan(
+        scan_id: int,
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    scan = get_scan(
+        db,
+        scan_id
+    )
+    if not scan:
+        raise HTTPException(
+            status_code=404,
+            detail="Scan not found"
+        )
+    return generate_explanation(
+        content=scan.content,
+        result=scan.result,
+        risk_score=scan.risk_score,
+        risk_level=scan.risk_level
+    )
