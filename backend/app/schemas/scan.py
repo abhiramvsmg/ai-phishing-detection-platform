@@ -25,3 +25,21 @@ class ScanResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+from app.schemas.user import UserOut
+
+class AdminScanResponse(BaseModel):
+    id: int
+    user_id: int
+    scan_type: str
+    content: str
+    result: str
+    risk_score: int
+    risk_level: str
+    created_at: datetime
+    updated_at: datetime
+    user: UserOut | None = None
+
+    class Config:
+        from_attributes = True

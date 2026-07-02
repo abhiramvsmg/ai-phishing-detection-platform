@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
@@ -6,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.dependencies.auth import get_current_user
 from app.models.user import User
+from app.schemas.report import ReportResponse
 
 from app.services.report_service import (
     generate_report,
@@ -27,7 +29,10 @@ router = APIRouter(
 )
 
 
-@router.post("/generate/{scan_id}")
+@router.post(
+    "/generate/{scan_id}",
+    response_model=ReportResponse
+)
 def create_report_api(
         scan_id: int,
         db: Session = Depends(get_db),
@@ -50,7 +55,10 @@ def create_report_api(
     return report
 
 
-@router.get("")
+@router.get(
+    "",
+    response_model=List[ReportResponse]
+)
 def get_my_reports(
         db: Session = Depends(get_db),
         current_user: User = Depends(
@@ -123,7 +131,10 @@ def export_csv(
         media_type="text/csv"
     )
 
-@router.get("/{report_id}")
+@router.get(
+    "/{report_id}",
+    response_model=ReportResponse
+)
 def get_report_by_id_api(
         report_id: int,
         db: Session = Depends(get_db),

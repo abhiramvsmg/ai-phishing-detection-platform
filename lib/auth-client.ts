@@ -5,7 +5,8 @@ export type AuthUser = {
   fullName: string;
   email: string;
   company: string;
-  password: string;
+  role: string;
+  password?: string;
 };
 
 export type AuthSession = {
@@ -13,6 +14,7 @@ export type AuthSession = {
   fullName: string;
   email: string;
   company: string;
+  role: string;
 };
 
 const USERS_KEY = "sentinel.users";
@@ -29,6 +31,7 @@ const demoUser: AuthUser = {
   fullName: "Security Admin",
   email: "admin@sentinel.test",
   company: "Enterprise",
+  role: "ADMIN",
   password: "Password123",
 };
 
@@ -82,6 +85,7 @@ const createSession = (user: AuthUser): AuthSession => {
     fullName: user.fullName,
     email: normalizeEmail(user.email),
     company: user.company,
+    role: user.role,
   };
 
   setCachedSession(session);
@@ -137,17 +141,26 @@ export const registerUser = async (details: {
     };
   }
 
+  let role = "USER";
+  let fullName = details.fullName.trim();
+  let userId = email;
+
   try {
     await api.auth.login({ email, password: details.password });
+    const profile = await api.users.me();
+    role = profile.role;
+    fullName = profile.name;
+    userId = String(profile.id);
   } catch {
     // Registered but auto-login failed - not fatal
   }
 
   const user: AuthUser = {
-    id: email,
-    fullName: details.fullName.trim(),
+    id: userId,
+    fullName,
     email,
     company: details.company.trim(),
+    role,
     password: details.password,
   };
 
@@ -168,14 +181,28 @@ export const signInUser = async (email: string, password: string) => {
     };
   }
 
-  const fakeUser: AuthUser = {
-    id: email,
-    fullName: email.split("@")[0],
+  let role = "USER";
+  let fullName = email.split("@")[0];
+  let userId = email;
+
+  try {
+    const profile = await api.users.me();
+    role = profile.role;
+    fullName = profile.name;
+    userId = String(profile.id);
+  } catch (err) {
+    console.error("Failed to load user profile", err);
+  }
+
+  const user: AuthUser = {
+    id: userId,
+    fullName,
     email,
     company: "",
+    role,
     password,
   };
-  createSession(fakeUser);
+  createSession(user);
 
   return { ok: true, message: "Signed in." };
 };

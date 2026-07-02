@@ -7,6 +7,10 @@ from app.dependencies.roles import (
     require_admin
 )
 from app.schemas.user import UserOut
+from app.schemas.scan import AdminScanResponse
+from app.schemas.report import AdminReportResponse
+from app.schemas.activity import ActivityLogResponse
+
 from app.services.admin_service import (
     admin_users,
     admin_scans,
@@ -30,19 +34,19 @@ def get_all_users_api(
         admin=Depends(require_admin)
 ):
     return admin_users(db)
-@router.get("/scans")
+@router.get("/scans", response_model=List[AdminScanResponse])
 def get_all_scans_api(
         db: Session = Depends(get_db),
         admin=Depends(require_admin)
 ):
     return admin_scans(db)
-@router.get("/reports")
+@router.get("/reports", response_model=List[AdminReportResponse])
 def get_all_reports_api(
         db: Session = Depends(get_db),
         admin=Depends(require_admin)
 ):
     return admin_reports(db)
-@router.get("/activities")
+@router.get("/activities", response_model=List[ActivityLogResponse])
 def get_all_activities_api(
         db: Session = Depends(get_db),
         admin=Depends(require_admin)

@@ -69,26 +69,6 @@ def risk_distribution(
         db,
         current_user.id
     )
-
-
-from app.services.dashboard_service import (
-    dashboard_risk_distribution
-)
-
-
-@router.get("/risk-distribution")
-def risk_distribution(
-        db: Session = Depends(get_db),
-        current_user: User = Depends(
-            get_current_user
-        )
-):
-
-    return dashboard_risk_distribution(
-        db,
-        current_user.id
-    )
-
 @router.get("/monthly-scans")
 def monthly_scans(
         db: Session = Depends(get_db),

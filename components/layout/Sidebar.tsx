@@ -1,15 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, ShieldCheck, Mail, 
   BarChart3, FileText, Users, Settings, 
-  Zap, Brain, TrendingUp
+  Zap, Brain, TrendingUp, ShieldAlert
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getSession, subscribeToAuth } from "@/lib/auth-client";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -24,11 +25,20 @@ const navItems = [
 
 export const Sidebar = () => {
   const pathname = usePathname();
+  const session = useSyncExternalStore(subscribeToAuth, getSession, () => null);
+
+  const isAdmin = session?.role === "ADMIN";
+
+  const items = [
+    ...navItems.slice(0, 7),
+    ...(isAdmin ? [{ name: "Admin Panel", href: "/dashboard/admin", icon: ShieldAlert }] : []),
+    ...navItems.slice(7),
+  ];
 
   return (
-    <aside className="w-64 bg-surface border-r border-white/10 flex flex-col h-screen sticky top-0">
+    <aside className="w-64 bg-white border-r border-slate-200/60 flex flex-col h-screen sticky top-0">
       {/* Logo Section */}
-      <div className="p-6 flex items-center gap-3 border-b border-white/10">
+      <div className="p-6 flex items-center gap-3 border-b border-slate-200/60">
         <motion.div 
           className="bg-gradient-to-br from-primary to-secondary p-2 rounded-lg"
           animate={{ rotate: [0, 5, -5, 0] }}
@@ -36,12 +46,12 @@ export const Sidebar = () => {
         >
           <ShieldCheck className="w-6 h-6 text-white" />
         </motion.div>
-        <span className="font-bold text-xl gradient-text">Sentinel</span>
+        <span className="font-black text-xl gradient-text tracking-tight uppercase">Sentinel</span>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
+        {items.map((item) => {
           const isActive = pathname === item.href;
           return (
             <motion.div
@@ -52,17 +62,17 @@ export const Sidebar = () => {
               <Link
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-lg transition-smooth group relative",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-smooth group relative border border-transparent text-sm font-semibold select-none",
                   isActive 
-                    ? "text-primary bg-primary/10 border border-primary/20" 
-                    : "text-muted hover:text-white hover:bg-white/5"
+                    ? "text-indigo-600 bg-indigo-50/60 border-indigo-100/50 shadow-sm shadow-indigo-50" 
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
                 )}
               >
                 <item.icon className={cn(
                   "w-5 h-5 transition-transform group-hover:scale-110",
-                  isActive ? "text-primary" : "text-muted group-hover:text-primary"
+                  isActive ? "text-indigo-600" : "text-slate-400 group-hover:text-indigo-500"
                 )} />
-                <span className="text-sm font-medium">{item.name}</span>
+                <span>{item.name}</span>
                 {isActive && (
                   <motion.div 
                     layoutId="active-indicator"
@@ -76,16 +86,16 @@ export const Sidebar = () => {
       </nav>
 
       {/* Footer Section */}
-      <div className="p-4 border-t border-white/10 space-y-4">
+      <div className="p-4 border-t border-slate-200/60 space-y-4">
         <motion.div 
-          className="glass-sm p-4 text-center space-y-2"
+          className="bg-slate-50 border border-slate-200/60 p-4 text-center space-y-2 rounded-2xl"
           whileHover={{ scale: 1.02 }}
         >
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Zap className="w-4 h-4 text-primary" />
-            <span className="text-xs font-semibold">Pro Plan</span>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Zap className="w-4 h-4 text-indigo-500" />
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">Pro Plan</span>
           </div>
-          <p className="text-[10px] text-muted leading-relaxed">
+          <p className="text-[10px] text-slate-500 font-medium leading-relaxed">
             Advanced threat detection and team collaboration
           </p>
         </motion.div>

@@ -136,22 +136,71 @@ export const api = {
         body: data,
         auth: true,
       }),
+
+    scanText: (data: { text: string }) =>
+      request<ScanResult>("/api/v1/scans/text", {
+        method: "POST",
+        body: data,
+        auth: true,
+      }),
+
+    explain: (scanId: number) =>
+      request<{ threats: string[]; summary: string }>(`/api/v1/scans/${scanId}/explain`, {
+        auth: true,
+      }),
+  },
+
+  users: {
+    me: () =>
+      request<{ id: number; name: string; email: string; role: string }>("/api/v1/users/me", {
+        auth: true,
+      }),
   },
 
   reports: {
     generate: (scanId: number) =>
-      request<unknown>(`/api/v1/reports/generate/${scanId}`, {
+      request<ReportRecord>(`/api/v1/reports/generate/${scanId}`, {
         method: "POST",
         auth: true,
       }),
 
     list: () =>
       request<ReportRecord[]>("/api/v1/reports", { auth: true }),
+
+    exportPdf: async (reportId: number) => {
+      const token = tokenStore.get();
+      const res = await fetch(`${API_BASE_URL}/api/v1/reports/export/pdf/${reportId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Failed to export PDF");
+      return res.blob();
+    },
+
+    exportCsv: async (reportId: number) => {
+      const token = tokenStore.get();
+      const res = await fetch(`${API_BASE_URL}/api/v1/reports/export/csv/${reportId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error("Failed to export CSV");
+      return res.blob();
+    },
   },
 
   admin: {
     listUsers: () =>
       request<AdminUser[]>("/api/v1/admin/users", { auth: true }),
+    listScans: () =>
+      request<ScanResult[]>("/api/v1/admin/scans", { auth: true }),
+    listReports: () =>
+      request<ReportRecord[]>("/api/v1/admin/reports", { auth: true }),
+    listActivities: () =>
+      request<any[]>("/api/v1/admin/activities", { auth: true }),
   },
 
   dashboard: {
