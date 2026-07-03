@@ -45,8 +45,8 @@ export default function Login() {
     <div className="min-h-screen bg-background flex items-center justify-center px-6 py-12 relative overflow-hidden">
       {/* Soft gradient blur backdrops */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[50%] aspect-square rounded-full bg-indigo-100/30 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[40%] aspect-square rounded-full bg-cyan-100/25 blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[50%] aspect-square rounded-full bg-violet-100/30 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[40%] aspect-square rounded-full bg-emerald-100/25 blur-3xl" />
       </div>
 
       {/* Cyber Grid background */}
@@ -94,7 +94,7 @@ export default function Login() {
                 placeholder="you@company.com"
                 autoComplete="email"
                 required
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function Login() {
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide">Password</label>
-              <Link href="#" className="text-xs font-bold text-indigo-650 hover:text-indigo-550">
+              <Link href="#" className="text-xs font-bold text-violet-650 hover:text-violet-550">
                 Forgot?
               </Link>
             </div>
@@ -117,12 +117,12 @@ export default function Login() {
                 placeholder="••••••••"
                 autoComplete="current-password"
                 required
-                className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3.5 text-slate-500 hover:text-indigo-600 transition-colors"
+                className="absolute right-3 top-3.5 text-slate-500 hover:text-violet-600 transition-colors"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -133,7 +133,7 @@ export default function Login() {
           <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer w-fit select-none">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-slate-350 bg-slate-50 cursor-pointer accent-indigo-650 focus:ring-0 focus:ring-offset-0"
+              className="w-4 h-4 rounded border-slate-350 bg-slate-50 cursor-pointer accent-violet-650 focus:ring-0 focus:ring-offset-0"
             />
             <span>Remember me</span>
           </label>
@@ -153,7 +153,7 @@ export default function Login() {
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60 text-sm active:scale-97"
+            className="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60 text-sm active:scale-97"
             whileTap={{ scale: 0.97 }}
           >
             {isSubmitting ? "Signing in..." : "Sign In"} <ArrowRight className="w-4 h-4" />
@@ -190,7 +190,7 @@ export default function Login() {
         <div className="text-center mt-6">
           <p className="text-slate-500 text-xs font-semibold">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-indigo-600 hover:text-indigo-500 font-bold">
+            <Link href="/register" className="text-violet-600 hover:text-violet-500 font-bold">
               Sign up
             </Link>
           </p>

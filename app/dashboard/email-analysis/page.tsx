@@ -92,7 +92,7 @@ export default function EmailAnalysisPage() {
             </div>
 
             <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-6 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-indigo-500" />
+              <Mail className="w-4 h-4 text-violet-500" />
               Raw Email Submission
             </h3>
 
@@ -102,7 +102,7 @@ export default function EmailAnalysisPage() {
                   value={emailText}
                   onChange={(e) => setEmailText(e.target.value)}
                   placeholder="Paste full email headers, SMTP context, or email body here for neural threat extraction..."
-                  className="w-full h-56 bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-xs leading-relaxed focus:bg-white focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all resize-none focus:outline-none text-slate-800 placeholder:text-slate-400"
+                  className="w-full h-56 bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-xs leading-relaxed focus:bg-white focus:border-violet-400 focus:ring-4 focus:ring-violet-100 transition-all resize-none focus:outline-none text-slate-800 placeholder:text-slate-400"
                 />
                 <div className="absolute bottom-4 right-4 flex items-center gap-2 select-none">
                   <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wide">Format: RFC 5322</span>
@@ -119,7 +119,7 @@ export default function EmailAnalysisPage() {
                 <button
                   onClick={startAnalysis}
                   disabled={isAnalyzing || !emailText.trim()}
-                  className="px-8 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center gap-3 disabled:opacity-50 text-xs uppercase tracking-wider active:scale-97"
+                  className="px-8 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center gap-3 disabled:opacity-50 text-xs uppercase tracking-wider active:scale-97"
                 >
                   {isAnalyzing ? (
                     <>
@@ -217,7 +217,7 @@ export default function EmailAnalysisPage() {
                 {/* Scan Metadata */}
                 <div className="p-6 rounded-3xl bg-white border border-slate-200/60 shadow-xl shadow-slate-100/40">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 bg-indigo-50 border border-indigo-100 text-indigo-500 rounded-2xl">
+                    <div className="p-3 bg-violet-50 border border-violet-100 text-violet-500 rounded-2xl">
                       <Globe className="w-6 h-6" />
                     </div>
                     <span className="font-black text-slate-800 text-lg uppercase tracking-tight">Forensic Metadata</span>
@@ -235,7 +235,7 @@ export default function EmailAnalysisPage() {
                   <button
                     onClick={handleGenerateReport}
                     disabled={generatingReport || reportGenerated}
-                    className="w-full mt-4 py-3 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-600 font-bold rounded-xl text-xs uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-2 active:scale-97 shadow-sm shadow-indigo-50"
+                    className="w-full mt-4 py-3 bg-violet-50 hover:bg-violet-100 border border-violet-200 text-violet-600 font-bold rounded-xl text-xs uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-2 active:scale-97 shadow-sm shadow-violet-50"
                   >
                     {generatingReport ? (
                       <>
@@ -269,11 +269,11 @@ export default function EmailAnalysisPage() {
 
         <div className="lg:col-span-4 space-y-6">
           {/* AI Explanation Summary */}
-          <div className="p-8 rounded-3xl bg-indigo-50/50 border border-indigo-200/50 shadow-xl shadow-indigo-50/20 relative overflow-hidden">
+          <div className="p-8 rounded-3xl bg-violet-50/50 border border-violet-200/50 shadow-xl shadow-violet-50/20 relative overflow-hidden">
             <div className="absolute -top-10 -right-10 opacity-[0.03] pointer-events-none">
               <Cpu className="w-40 h-40 text-slate-900" />
             </div>
-            <h3 className="text-sm font-black mb-6 flex items-center gap-2 text-indigo-600 uppercase tracking-wider">
+            <h3 className="text-sm font-black mb-6 flex items-center gap-2 text-violet-600 uppercase tracking-wider">
               <Cpu className="w-4 h-4" />
               AI Copilot Breakdown
             </h3>

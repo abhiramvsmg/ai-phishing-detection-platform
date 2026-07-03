@@ -74,7 +74,7 @@ export default function ReportsPage() {
         {[
           { label: "Total Reports", val: reports ? String(reports.length) : "—", icon: FileCheck, color: "text-teal-600" },
           { label: "Latest Report", val: reports && reports.length > 0 ? new Date(reports[reports.length - 1].created_at).toLocaleDateString() : "—", icon: Clock, color: "text-amber-500" },
-          { label: "Reporting Status", val: "Live Feed", icon: ShieldCheck, color: "text-indigo-600" },
+          { label: "Reporting Status", val: "Live Feed", icon: ShieldCheck, color: "text-violet-600" },
         ].map((stat) => (
           <div key={stat.label} className="p-6 bg-white border border-slate-200/60 rounded-3xl shadow-xl shadow-slate-100/40 flex items-center gap-6">
             <div className={`p-4 rounded-2xl bg-slate-50 border border-slate-100 ${stat.color} shadow-inner`}>
@@ -92,9 +92,9 @@ export default function ReportsPage() {
       <div className="bg-white border border-slate-200/60 rounded-3xl overflow-hidden shadow-xl shadow-slate-100/40">
         <div className="p-6 border-b border-slate-150 flex items-center justify-between bg-slate-50/50">
           <div className="relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-violet-500 transition-colors" />
             <input
-              className="bg-white border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-xs w-80 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 outline-none text-slate-800 transition-all placeholder:text-slate-400"
+              className="bg-white border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-xs w-80 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 outline-none text-slate-800 transition-all placeholder:text-slate-400"
               placeholder="Search reports by ID or scan target..."
             />
           </div>
@@ -122,15 +122,15 @@ export default function ReportsPage() {
                 className="p-6 flex flex-col md:flex-row md:items-start justify-between gap-5 hover:bg-slate-50/40 transition-all group"
               >
                 <div className="flex items-start gap-5 flex-1 min-w-0">
-                  <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-indigo-500 shrink-0 shadow-inner">
+                  <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl text-violet-500 shrink-0 shadow-inner">
                     <FileText className="w-6 h-6" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-sm text-slate-800 group-hover:text-indigo-600 transition-colors">
+                    <h4 className="font-bold text-sm text-slate-800 group-hover:text-violet-600 transition-colors">
                       Report #{report.id} — {report.report_type}
                     </h4>
                     <div className="flex items-center gap-3 mt-1.5 font-mono text-[9px] text-slate-450 font-bold uppercase tracking-wider">
-                      <span className="text-indigo-500">Scan ID: #{report.scan_id}</span>
+                      <span className="text-violet-500">Scan ID: #{report.scan_id}</span>
                       <span className="w-1 h-1 bg-slate-300 rounded-full" />
                       <span>{new Date(report.created_at).toLocaleString()}</span>
                     </div>

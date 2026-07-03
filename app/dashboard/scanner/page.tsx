@@ -158,12 +158,12 @@ export default function ScannerPage() {
                 setComplete(false);
               }}
               className={`pb-3 font-bold text-xs uppercase tracking-wider transition-smooth relative ${
-                activeTab === "url" ? "text-indigo-600" : "text-slate-400 hover:text-slate-600"
+                activeTab === "url" ? "text-violet-600" : "text-slate-400 hover:text-slate-600"
               }`}
             >
               Scan URL Address
               {activeTab === "url" && (
-                <motion.div layoutId="scanner-active-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600" />
+                <motion.div layoutId="scanner-active-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600" />
               )}
             </button>
             <button
@@ -173,12 +173,12 @@ export default function ScannerPage() {
                 setComplete(false);
               }}
               className={`pb-3 font-bold text-xs uppercase tracking-wider transition-smooth relative ${
-                activeTab === "text" ? "text-indigo-600" : "text-slate-400 hover:text-slate-600"
+                activeTab === "text" ? "text-violet-600" : "text-slate-400 hover:text-slate-600"
               }`}
             >
               Scan Message Content
               {activeTab === "text" && (
-                <motion.div layoutId="scanner-active-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600" />
+                <motion.div layoutId="scanner-active-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600" />
               )}
             </button>
           </div>
@@ -194,7 +194,7 @@ export default function ScannerPage() {
                     <Globe className="absolute left-4 top-3.5 w-4 h-4 text-slate-500" />
                     <input
                       type="url"
-                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-450"
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-sm focus:outline-none placeholder:text-slate-450"
                       placeholder="https://malicious-sign-in-portal.org"
                       value={url}
                       onChange={(e) => setUrl(e.target.value)}
@@ -206,7 +206,7 @@ export default function ScannerPage() {
                   <>
                     <Brain className="absolute left-4 top-4.5 w-4 h-4 text-slate-500" />
                     <textarea
-                      className="w-full pl-11 pr-4 py-3 h-14 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-450 resize-none font-medium"
+                      className="w-full pl-11 pr-4 py-3 h-14 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-450 resize-none font-medium"
                       placeholder="Paste email headers, message copy, or SMS alerts here..."
                       value={text}
                       onChange={(e) => setText(e.target.value)}
@@ -219,7 +219,7 @@ export default function ScannerPage() {
               <motion.button
                 type="submit"
                 disabled={scanning || (activeTab === "url" ? !url : !text)}
-                className="px-8 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50 h-fit self-center"
+                className="px-8 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50 h-fit self-center"
                 whileTap={{ scale: 0.97 }}
               >
                 {scanning ? (
@@ -246,7 +246,7 @@ export default function ScannerPage() {
             className="flex items-center justify-between w-full text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors uppercase tracking-wider"
           >
             <span className="flex items-center gap-2">
-              <Settings2 className="w-4 h-4 text-indigo-500" />
+              <Settings2 className="w-4 h-4 text-violet-500" />
               Advanced Forensic Engine Settings
             </span>
             {advancedOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -267,7 +267,7 @@ export default function ScannerPage() {
                     return (
                       <label 
                         key={modKey}
-                        className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-indigo-200 transition-colors select-none"
+                        className="flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-violet-200 transition-colors select-none"
                       >
                         <input
                           type="checkbox"
@@ -276,7 +276,7 @@ export default function ScannerPage() {
                             ...prev,
                             [modKey]: e.target.checked
                           }))}
-                          className="w-4 h-4 rounded border-slate-350 bg-white cursor-pointer accent-indigo-650"
+                          className="w-4 h-4 rounded border-slate-350 bg-white cursor-pointer accent-violet-650"
                         />
                         <span className="text-xs font-bold text-slate-700">{label}</span>
                       </label>
@@ -307,7 +307,7 @@ export default function ScannerPage() {
             <div className="lg:col-span-8 space-y-4">
               <div className="space-y-1">
                 <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-indigo-500 animate-pulse" />
+                  <Zap className="w-5 h-5 text-violet-500 animate-pulse" />
                   Active Security Validation
                 </h3>
                 <p className="text-slate-500 text-xs font-semibold">Resolving threat surfaces through forensic modules...</p>
@@ -324,7 +324,7 @@ export default function ScannerPage() {
                         isDone 
                           ? "bg-teal-50/50 border-teal-200 text-teal-700" 
                           : isActive 
-                          ? "bg-indigo-50 border-indigo-200 text-indigo-700 animate-pulse" 
+                          ? "bg-violet-50 border-violet-200 text-violet-700 animate-pulse" 
                           : "bg-slate-50/50 border-slate-150 text-slate-400"
                       }`}
                     >
@@ -333,7 +333,7 @@ export default function ScannerPage() {
                           <Check className="w-3 h-3" />
                         </div>
                       ) : isActive ? (
-                        <div className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0">
+                        <div className="w-5 h-5 rounded-full bg-violet-600 text-white flex items-center justify-center shrink-0">
                           <Loader2 className="w-3 h-3 animate-spin" />
                         </div>
                       ) : (
@@ -367,14 +367,14 @@ export default function ScannerPage() {
             >
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2">Forensic Target</p>
               <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-2xl p-4">
-                <code className="text-xs text-indigo-600 font-mono break-all font-black select-all pr-4">{activeTab === "url" ? url : text}</code>
+                <code className="text-xs text-violet-600 font-mono break-all font-black select-all pr-4">{activeTab === "url" ? url : text}</code>
                 <button
                   type="button"
                   onClick={() => navigator.clipboard.writeText(activeTab === "url" ? url : text)}
                   className="p-2.5 hover:bg-slate-200/50 rounded-xl transition-all"
                   title="Copy to clipboard"
                 >
-                  <Copy className="w-4 h-4 text-slate-500 hover:text-indigo-600" />
+                  <Copy className="w-4 h-4 text-slate-500 hover:text-violet-600" />
                 </button>
               </div>
             </motion.div>
@@ -499,7 +499,7 @@ export default function ScannerPage() {
                   transition={{ delay: 0.25 }}
                 >
                   <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <Brain className="w-4 h-4 text-indigo-500" />
+                    <Brain className="w-4 h-4 text-violet-500" />
                     AI Core Evaluation Summary
                   </h3>
                   <div className="p-4 bg-slate-50 border border-slate-150 rounded-2xl min-h-[50px]">
@@ -538,7 +538,7 @@ export default function ScannerPage() {
                 type="button"
                 onClick={handleGenerateReport}
                 disabled={generatingReport || reportGenerated}
-                className="flex-1 py-3.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-600 font-bold rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm text-sm"
+                className="flex-1 py-3.5 bg-violet-50 hover:bg-violet-100 border border-violet-200 text-violet-600 font-bold rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm text-sm"
               >
                 {generatingReport ? (
                   <>
@@ -565,7 +565,7 @@ export default function ScannerPage() {
                   setUrl("");
                   setText("");
                 }}
-                className="flex-1 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all text-sm active:scale-97"
+                className="flex-1 py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all text-sm active:scale-97"
               >
                 Scan Another
               </button>

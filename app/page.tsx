@@ -40,32 +40,32 @@ const HeroVisual = () => {
   return (
     <div className="relative w-full max-w-[420px] aspect-square mx-auto flex items-center justify-center">
       {/* Soft gradient blur backdrops */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-200/30 to-cyan-200/30 rounded-full blur-3xl opacity-60 animate-pulse-glow" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-violet-200/30 to-emerald-200/30 rounded-full blur-3xl opacity-60 animate-pulse-glow" />
 
       {/* Concentric design details */}
       <motion.div
-        className="absolute w-80 h-80 rounded-full border border-indigo-200/40 border-dashed"
+        className="absolute w-80 h-80 rounded-full border border-violet-200/40 border-dashed"
         animate={{ rotate: 360 }}
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
-        className="absolute w-64 h-64 rounded-full border border-cyan-200/30"
+        className="absolute w-64 h-64 rounded-full border border-emerald-200/30"
         animate={{ scale: [0.95, 1.05, 0.95] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Pulsing main core (Shield container) */}
       <motion.div
-        className="relative z-10 w-36 h-36 rounded-3xl bg-white shadow-2xl shadow-indigo-150 border border-slate-100 flex items-center justify-center"
+        className="relative z-10 w-36 h-36 rounded-3xl bg-white shadow-2xl shadow-violet-150 border border-slate-100 flex items-center justify-center"
         animate={{ y: [-8, 8, -8] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
         <motion.div
-          className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-500/5 to-cyan-500/5"
+          className="absolute inset-0 rounded-3xl bg-gradient-to-br from-violet-500/5 to-emerald-500/5"
           animate={{ opacity: [0.4, 0.8, 0.4] }}
           transition={{ duration: 3, repeat: Infinity }}
         />
-        <ShieldCheck className="w-16 h-16 text-indigo-500 drop-shadow-[0_4px_12px_rgba(99,102,241,0.3)]" />
+        <ShieldCheck className="w-16 h-16 text-violet-500 drop-shadow-[0_4px_12px_rgba(99,102,241,0.3)]" />
       </motion.div>
 
       {/* Floating threat nodes */}
@@ -141,8 +141,8 @@ export default function Home() {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Ambient gradient backdrops */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] aspect-square rounded-full bg-indigo-100/30 blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] aspect-square rounded-full bg-cyan-100/20 blur-3xl" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] aspect-square rounded-full bg-violet-100/30 blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] aspect-square rounded-full bg-emerald-100/20 blur-3xl" />
         <div className="absolute top-[40%] right-[20%] w-[30%] aspect-square rounded-full bg-rose-100/10 blur-3xl" />
       </div>
 
@@ -167,7 +167,7 @@ export default function Home() {
         >
           <Link
             href="/login"
-            className="px-6 py-2.5 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-xl hover:bg-indigo-100 shadow-sm hover:shadow-indigo-50 transition-all font-bold text-sm active:scale-95 duration-150"
+            className="px-6 py-2.5 bg-violet-50 border border-violet-100 text-violet-600 rounded-xl hover:bg-violet-100 shadow-sm hover:shadow-violet-50 transition-all font-bold text-sm active:scale-95 duration-150"
           >
             Sign In
           </Link>
@@ -183,10 +183,10 @@ export default function Home() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <motion.div 
-            className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-indigo-100 rounded-full shadow-sm text-xs font-semibold text-indigo-600"
+            className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-violet-100 rounded-full shadow-sm text-xs font-semibold text-violet-600"
             whileHover={{ scale: 1.02 }}
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-500 animate-spin" style={{ animationDuration: '4s' }} />
+            <Sparkles className="w-3.5 h-3.5 text-violet-500 animate-spin" style={{ animationDuration: '4s' }} />
             <span>Powered by Advanced AI Core</span>
           </motion.div>
 
@@ -203,7 +203,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 pt-2">
             <Link
               href="/dashboard"
-              className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 active:scale-97"
+              className="px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center justify-center gap-2 active:scale-97"
             >
               Launch Platform <ArrowRight className="w-4 h-4" />
             </Link>
@@ -225,7 +225,7 @@ export default function Home() {
             {stats.map((stat, idx) => (
               <motion.div key={idx} variants={itemVariants}>
                 <TiltCard className="p-4 text-center border-slate-250 shadow-md">
-                  <stat.icon className="w-5 h-5 text-indigo-500 mx-auto mb-2" />
+                  <stat.icon className="w-5 h-5 text-violet-500 mx-auto mb-2" />
                   <div className="text-2xl font-black text-slate-800">{stat.value}</div>
                   <div className="text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-1">{stat.label}</div>
                 </TiltCard>
@@ -263,8 +263,8 @@ export default function Home() {
         >
           {features.map((feature, idx) => (
             <motion.div key={idx} variants={itemVariants}>
-              <TiltCard className="h-full border-slate-250 shadow-md hover:border-indigo-300">
-                <div className="mb-4 inline-block p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-indigo-600 group-hover:scale-110 transition-transform">
+              <TiltCard className="h-full border-slate-250 shadow-md hover:border-violet-300">
+                <div className="mb-4 inline-block p-3 bg-violet-50 border border-violet-100 rounded-xl text-violet-600 group-hover:scale-110 transition-transform">
                   <feature.icon className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-800 mb-2">{feature.title}</h3>
@@ -283,8 +283,8 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-100/20 rounded-full blur-xl" />
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-cyan-100/20 rounded-full blur-2xl" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-violet-100/20 rounded-full blur-xl" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-100/20 rounded-full blur-2xl" />
 
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 uppercase tracking-tight">Ready to Secure Your Org?</h2>
           <p className="text-slate-500 mb-8 max-w-lg mx-auto text-sm leading-relaxed">
@@ -292,7 +292,7 @@ export default function Home() {
           </p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all active:scale-97"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all active:scale-97"
           >
             Start Free Trial <ArrowRight className="w-5 h-5" />
           </Link>

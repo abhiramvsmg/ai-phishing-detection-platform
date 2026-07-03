@@ -72,8 +72,8 @@ export default function Register() {
     <div className="min-h-screen bg-background flex items-center justify-center px-6 py-12 relative overflow-hidden">
       {/* Soft gradient blur backdrops */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[50%] aspect-square rounded-full bg-indigo-100/30 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[40%] aspect-square rounded-full bg-cyan-100/25 blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[50%] aspect-square rounded-full bg-violet-100/30 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[40%] aspect-square rounded-full bg-emerald-100/25 blur-3xl" />
       </div>
 
       {/* Cyber Grid background */}
@@ -119,7 +119,7 @@ export default function Register() {
                 placeholder="John Doe"
                 autoComplete="name"
                 required
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -137,7 +137,7 @@ export default function Register() {
                 placeholder="you@company.com"
                 autoComplete="email"
                 required
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function Register() {
                 placeholder="Your Company"
                 autoComplete="organization"
                 required
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function Register() {
                 autoComplete="new-password"
                 minLength={8}
                 required
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function Register() {
                 autoComplete="new-password"
                 minLength={8}
                 required
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition-all text-slate-900 text-xs focus:outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -205,15 +205,15 @@ export default function Register() {
               checked={acceptedTerms}
               onChange={(event) => setAcceptedTerms(event.target.checked)}
               required
-              className="w-4 h-4 rounded border-slate-300 bg-slate-50 cursor-pointer accent-indigo-600 focus:ring-0 focus:ring-offset-0 mt-0.5"
+              className="w-4 h-4 rounded border-slate-300 bg-slate-50 cursor-pointer accent-violet-600 focus:ring-0 focus:ring-offset-0 mt-0.5"
             />
             <span>
               I agree to the{" "}
-              <Link href="#" className="text-indigo-600 hover:text-indigo-500 font-bold">
+              <Link href="#" className="text-violet-600 hover:text-violet-500 font-bold">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="#" className="text-indigo-600 hover:text-indigo-500 font-bold">
+              <Link href="#" className="text-violet-600 hover:text-violet-500 font-bold">
                 Privacy Policy
               </Link>
             </span>
@@ -234,7 +234,7 @@ export default function Register() {
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 mt-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60 text-sm active:scale-97"
+            className="w-full py-3.5 mt-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:shadow-lg hover:shadow-violet-200 transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60 text-sm active:scale-97"
             whileTap={{ scale: 0.97 }}
           >
             {isSubmitting ? "Creating account..." : "Create Account"} <ArrowRight className="w-4 h-4" />
@@ -245,7 +245,7 @@ export default function Register() {
         <div className="text-center mt-6">
           <p className="text-slate-500 text-xs font-semibold">
             Already have an account?{" "}
-            <Link href="/login" className="text-indigo-600 hover:text-indigo-500 font-bold">
+            <Link href="/login" className="text-violet-600 hover:text-violet-500 font-bold">
               Sign in
             </Link>
           </p>

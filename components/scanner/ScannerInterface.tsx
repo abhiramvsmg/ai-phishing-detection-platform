@@ -112,7 +112,7 @@ export function ScannerInterface() {
             )}
             <button 
               disabled={status === 'scanning' || !url}
-              className="bg-brand-cyan hover:bg-cyan-400 text-black px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="bg-brand-cyan hover:bg-emerald-400 text-black px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
             >
               {status === 'scanning' ? (
                 <>

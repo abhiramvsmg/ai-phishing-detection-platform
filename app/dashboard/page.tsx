@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Brain, Shield, AlertTriangle, Zap, Clock, Activity } from "lucide-react";
+import { ArrowUpRight, Brain, Shield, AlertTriangle, Zap, Clock, Activity, Target, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import { TiltCard } from "@/components/ui/TiltCard";
@@ -52,8 +52,11 @@ export default function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-1"
       >
-        <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Security Dashboard</h1>
-        <p className="text-slate-500 text-sm font-medium">Real-time threat detection and forensic analysis</p>
+        <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-2">
+          <ShieldCheck className="w-8 h-8 text-primary animate-glow-pulse" />
+          Security Dashboard
+        </h1>
+        <p className="text-slate-500 text-sm font-semibold">Real-time threat detection and forensic analysis</p>
       </motion.div>
 
       {loadError && (
@@ -66,7 +69,7 @@ export default function Dashboard() {
         </motion.p>
       )}
 
-      {/* KPI stats section */}
+      {/* KPI stats section using 3D TiltCards with custom glows */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         initial="hidden"
@@ -81,6 +84,7 @@ export default function Dashboard() {
           value={phishingCount !== null ? String(phishingCount) : "—"}
           icon={Shield}
           trend={phishingCount !== null ? "Live Feed" : "..."}
+          glowColor="13, 148, 136"
           color="text-teal-600"
         />
         <KPICard
@@ -88,13 +92,15 @@ export default function Dashboard() {
           value="99.8%"
           icon={Brain}
           trend="Excellent"
-          color="text-indigo-600"
+          glowColor="99, 102, 241"
+          color="text-violet-600"
         />
         <KPICard
           label="Active Incidents"
           value="12"
           icon={AlertTriangle}
           trend="3 Critical"
+          glowColor="217, 119, 6"
           color="text-amber-600"
         />
         <KPICard
@@ -102,114 +108,123 @@ export default function Dashboard() {
           value="45ms"
           icon={Zap}
           trend="Optimized"
-          color="text-indigo-600"
+          glowColor="6, 182, 212"
+          color="text-emerald-600"
         />
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Threat activity chart */}
-        <motion.div
-          className="lg:col-span-2 bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        {/* Threat activity chart in 3D Card */}
+        <TiltCard
+          glowColor="6, 182, 212"
+          className="lg:col-span-2 bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40 relative overflow-hidden"
+          maxRotation={3}
+          depthZ={8}
         >
-          <div className="flex justify-between items-center mb-6">
+          <div className="cyber-grid absolute inset-0 pointer-events-none opacity-20" />
+          <div className="flex justify-between items-center mb-6 relative z-20">
             <div>
               <h2 className="text-lg font-bold text-slate-800">Threat Activity</h2>
               <p className="text-xs text-slate-500 font-medium">Last 24 hours monitoring</p>
             </div>
             <motion.div
-              className="flex items-center gap-2 text-xs font-bold text-teal-600 bg-teal-50 border border-teal-100 rounded-full px-2.5 py-1"
+              className="flex items-center gap-2 text-xs font-bold text-teal-600 bg-teal-50 border border-teal-100 rounded-full px-2.5 py-1 select-none"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <span className="w-1.5 h-1.5 bg-teal-500 rounded-full" />
+              <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-ping" />
               LIVE TELEMETRY
             </motion.div>
           </div>
 
-          <ThreatChart />
-        </motion.div>
+          <div className="relative z-20">
+            <ThreatChart />
+          </div>
+        </TiltCard>
 
-        {/* AI Insights Card */}
-        <motion.div
-          className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40 flex flex-col justify-between"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+        {/* AI Insights Card in 3D Card */}
+        <TiltCard
+          glowColor="99, 102, 241"
+          className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40 flex flex-col justify-between h-full"
+          maxRotation={4}
+          depthZ={10}
         >
           <div>
             <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
-              <Brain className="w-5 h-5 text-indigo-500" />
-              <h2 className="text-lg font-bold text-slate-800">AI Guardrail Insights</h2>
+              <Brain className="w-5 h-5 text-violet-500 animate-float" />
+              <h2 className="text-lg font-bold text-slate-800 font-black tracking-tight">AI Guardrail Insights</h2>
             </div>
 
             <div className="space-y-4">
-              <div className="p-4 bg-indigo-50/60 border border-indigo-100 rounded-2xl space-y-2">
-                <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider">Anomaly Alert</p>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+              <div className="p-4 bg-violet-50/60 border border-violet-100 rounded-2xl space-y-2 hover:border-violet-300 transition-colors">
+                <p className="text-xs font-black text-violet-600 uppercase tracking-wider">Anomaly Alert</p>
+                <p className="text-xs text-slate-600 leading-relaxed font-semibold">
                   Unusual spike in credential harvesting attempts detected at 14:32 UTC. Shield algorithms engaged.
                 </p>
               </div>
 
-              <div className="space-y-3">
-                <div className="space-y-1">
+              <div className="space-y-3 pt-2">
+                <div className="space-y-1.5">
                   <div className="flex justify-between text-xs font-bold text-slate-700">
                     <span>Model Precision</span>
-                    <span className="text-indigo-600">99.8%</span>
+                    <span className="text-violet-600">99.8%</span>
                   </div>
-                  <motion.div
-                    className="w-full h-2 bg-slate-100 rounded-full overflow-hidden"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 0.5, duration: 1 }}
-                  >
-                    <div className="h-full w-[99.8%] bg-gradient-to-r from-primary to-secondary" />
-                  </motion.div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-primary to-secondary"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "99.8%" }}
+                      transition={{ delay: 0.5, duration: 1 }}
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <div className="flex justify-between text-xs font-bold text-slate-700">
                     <span>Defensive Capture Rate</span>
                     <span className="text-teal-600">98.5%</span>
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full w-[98.5%] bg-teal-500" />
+                    <motion.div
+                      className="h-full bg-teal-500"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "98.5%" }}
+                      transition={{ delay: 0.6, duration: 1 }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 text-[10px] text-slate-400 font-bold uppercase tracking-wider text-center">
+          <div className="mt-6 pt-4 border-t border-slate-100 text-[10px] text-slate-400 font-bold uppercase tracking-wider text-center select-none">
             System Operational status: normal
           </div>
-        </motion.div>
+        </TiltCard>
       </div>
 
-      {/* Recent Threats Table list */}
-      <motion.div
-        className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+      {/* Recent Threats Table list wrapped in a light 3D card */}
+      <TiltCard
+        glowColor="99, 102, 241"
+        className="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-xl shadow-slate-100/40 relative overflow-hidden"
+        maxRotation={2}
+        depthZ={5}
       >
         <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <Activity className="w-5 h-5 text-indigo-500" />
+          <Activity className="w-5 h-5 text-violet-500" />
           Recent Detections & Scans
         </h2>
 
         {recentThreats === null ? (
-          <p className="text-sm text-slate-500">Loading recent platform activity...</p>
+          <p className="text-sm text-slate-500 font-semibold">Loading recent platform activity...</p>
         ) : recentThreats.length === 0 ? (
-          <p className="text-sm text-slate-500">No scans logged yet. Initiate your first scan to see live reports.</p>
+          <p className="text-sm text-slate-500 font-semibold">No scans logged yet. Initiate your first scan to see live reports.</p>
         ) : (
           <div className="space-y-3">
             {recentThreats.map((threat, idx) => (
               <motion.div
                 key={idx}
-                className="flex items-center justify-between p-4 bg-slate-50/50 hover:bg-slate-50 border border-slate-150 rounded-2xl transition-all"
+                className="flex items-center justify-between p-4 bg-slate-50/50 hover:bg-white border border-slate-100 hover:border-violet-200 hover:shadow-md hover:shadow-violet-50/20 rounded-2xl transition-all duration-300"
                 whileHover={{ x: 4 }}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -247,7 +262,7 @@ export default function Dashboard() {
             ))}
           </div>
         )}
-      </motion.div>
+      </TiltCard>
     </div>
   );
 }
@@ -257,21 +272,23 @@ function KPICard({
   value,
   icon: Icon,
   trend,
+  glowColor,
   color
 }: {
   label: string;
   value: string;
   icon: React.ComponentType<any>;
   trend: string;
+  glowColor: string;
   color: string;
 }) {
   return (
     <motion.div
       variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
     >
-      <TiltCard className="p-6 h-full group hover:border-indigo-300">
+      <TiltCard glowColor={glowColor} className="p-6 h-full border border-slate-200/60 bg-white">
         <div className="flex justify-between items-start mb-4">
-          <div className="p-2.5 rounded-xl bg-slate-50 group-hover:bg-indigo-50 border border-slate-100 transition-smooth">
+          <div className="p-2.5 rounded-xl bg-slate-50 group-hover:bg-violet-50 border border-slate-100 transition-all duration-300">
             <Icon className={`w-5 h-5 ${color}`} />
           </div>
           <span className={`text-[10px] font-bold ${
@@ -281,7 +298,7 @@ function KPICard({
           } px-2 py-0.5 rounded-full uppercase tracking-wide`}>{trend}</span>
         </div>
         <p className="text-xs text-slate-500 font-bold uppercase tracking-wide mb-1">{label}</p>
-        <h3 className="text-2xl md:text-3xl font-black text-slate-800">{value}</h3>
+        <h3 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">{value}</h3>
       </TiltCard>
     </motion.div>
   );
@@ -304,28 +321,28 @@ function ThreatChart() {
       <div className="flex gap-4 h-48 items-end">
         {data.map((item, idx) => (
           <div key={idx} className="flex-1 flex flex-col justify-end gap-2 h-full">
-            <div className="flex-1 flex items-end gap-1">
+            <div className="flex-1 flex items-end gap-1.5">
               <motion.div
-                className="w-full bg-gradient-to-t from-indigo-500 to-indigo-300 rounded-t-md relative group cursor-pointer"
+                className="w-full bg-gradient-to-t from-violet-500 to-violet-300 rounded-t-md relative group cursor-pointer hover:shadow-lg hover:shadow-violet-500/20"
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: (item.blocked / maxValue) || 0.1 }}
                 transition={{ delay: idx * 0.05, duration: 0.6 }}
                 whileHover={{ scale: 1.05 }}
                 style={{ originY: 1 }}
               >
-                <div className="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 rounded px-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-bold text-violet-600 bg-violet-50 border border-violet-100 rounded px-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 shadow-md">
                   {item.blocked}
                 </div>
               </motion.div>
               <motion.div
-                className="w-full bg-gradient-to-t from-cyan-400 to-cyan-200 rounded-t-md relative group cursor-pointer"
+                className="w-full bg-gradient-to-t from-emerald-400 to-emerald-200 rounded-t-md relative group cursor-pointer hover:shadow-lg hover:shadow-emerald-500/20"
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: (item.detected / maxValue) || 0.1 }}
                 transition={{ delay: idx * 0.05 + 0.1, duration: 0.6 }}
                 whileHover={{ scale: 1.05 }}
                 style={{ originY: 1 }}
               >
-                <div className="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-bold text-cyan-600 bg-cyan-50 border border-cyan-100 rounded px-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute -top-7 left-1/2 -translate-x-1/2 text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 rounded px-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 shadow-md">
                   {item.detected}
                 </div>
               </motion.div>
@@ -337,11 +354,11 @@ function ThreatChart() {
 
       <div className="flex gap-6 justify-center text-[10px] font-bold uppercase tracking-wider text-slate-500 pt-2 border-t border-slate-100">
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 bg-indigo-500 rounded-sm" />
+          <div className="w-2.5 h-2.5 bg-violet-500 rounded-sm" />
           <span>Threats Blocked</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 bg-cyan-400 rounded-sm" />
+          <div className="w-2.5 h-2.5 bg-emerald-400 rounded-sm" />
           <span>Incidents Detected</span>
         </div>
       </div>

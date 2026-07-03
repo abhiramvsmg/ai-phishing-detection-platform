@@ -11,29 +11,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#F1F5F9", // Soft slate-100 background
-        surface: "#E2E8F0",    // Slate-200
+        background: "#FAFAFF", // Barely-tinted violet-white
+        surface: "#F3F0FF",    // Soft violet surface
         card: "#FFFFFF",       // Pure White
-        primary: "#6366F1",    // Indigo
-        secondary: "#06B6D4",  // Teal-Cyan
-        success: "#0D9488",    // Safe Teal
-        warning: "#D97706",    // Suspicious Amber
-        danger: "#E11D48",     // Malicious Coral-Rose
-        muted: "#475569",      // Slate-600
-        border: "#CBD5E1",     // Slate-300
+        primary: "#7C3AED",    // Vivid Violet
+        secondary: "#10B981",  // Emerald Mint
+        success: "#10B981",    // Emerald Mint (matches secondary)
+        warning: "#D97706",    // Amber
+        danger: "#E11D48",     // Rose
+        muted: "#6B5B95",      // Muted violet-grey
+        border: "#EDE9FE",     // Soft violet border
       },
-      backgroundImage: {
-        'gradient-primary': 'linear-gradient(135deg, #6366F1 0%, #06B6D4 100%)',
-        'gradient-dark': 'linear-gradient(135deg, #FAFAFB 0%, #F1F5F9 100%)',
-        'gradient-card': 'linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)',
+     backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, #7C3AED 0%, #10B981 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #FEFEFF 0%, #FAFAFF 100%)',
+        'gradient-card': 'linear-gradient(135deg, rgba(124, 58, 237, 0.04) 0%, rgba(16, 185, 129, 0.04) 100%)',
       },
       backdropBlur: {
         xs: '2px',
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(99, 102, 241, 0.12)',
-        'glow-lg': '0 0 40px rgba(99, 102, 241, 0.2)',
-        'glow-purple': '0 0 20px rgba(6, 182, 212, 0.12)',
+        'glow': '0 0 20px rgba(124, 58, 237, 0.14)',
+        'glow-lg': '0 0 40px rgba(124, 58, 237, 0.22)',
+        'glow-purple': '0 0 20px rgba(16, 185, 129, 0.14)',
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',

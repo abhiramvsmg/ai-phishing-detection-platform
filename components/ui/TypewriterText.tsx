@@ -30,7 +30,7 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({ text, speed = 12
     <span className="relative font-sans text-sm text-slate-700 leading-relaxed">
       {displayedText}
       <motion.span
-        className="inline-block w-1.5 h-4 bg-indigo-500 ml-1 align-middle"
+        className="inline-block w-1.5 h-4 bg-violet-500 ml-1 align-middle"
         animate={{ opacity: [1, 0, 1] }}
         transition={{ duration: 0.8, repeat: Infinity }}
       />

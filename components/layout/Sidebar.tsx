@@ -64,13 +64,13 @@ export const Sidebar = () => {
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl transition-smooth group relative border border-transparent text-sm font-semibold select-none",
                   isActive 
-                    ? "text-indigo-600 bg-indigo-50/60 border-indigo-100/50 shadow-sm shadow-indigo-50" 
+                    ? "text-violet-600 bg-violet-50/60 border-violet-100/50 shadow-sm shadow-violet-50" 
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50/80"
                 )}
               >
                 <item.icon className={cn(
                   "w-5 h-5 transition-transform group-hover:scale-110",
-                  isActive ? "text-indigo-600" : "text-slate-400 group-hover:text-indigo-500"
+                  isActive ? "text-violet-600" : "text-slate-400 group-hover:text-violet-500"
                 )} />
                 <span>{item.name}</span>
                 {isActive && (
@@ -92,7 +92,7 @@ export const Sidebar = () => {
           whileHover={{ scale: 1.02 }}
         >
           <div className="flex items-center justify-center gap-2 mb-1">
-            <Zap className="w-4 h-4 text-indigo-500" />
+            <Zap className="w-4 h-4 text-violet-500" />
             <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">Pro Plan</span>
           </div>
           <p className="text-[10px] text-slate-500 font-medium leading-relaxed">

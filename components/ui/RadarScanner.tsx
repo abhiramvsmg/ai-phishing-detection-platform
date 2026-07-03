@@ -15,18 +15,18 @@ export const RadarScanner: React.FC = () => {
       />
 
       {/* Concentric circles */}
-      <div className="absolute inset-4 border border-indigo-100/60 rounded-full" />
-      <div className="absolute inset-12 border border-indigo-100/40 rounded-full" />
-      <div className="absolute inset-20 border border-indigo-100/20 rounded-full" />
+      <div className="absolute inset-4 border border-violet-100/60 rounded-full" />
+      <div className="absolute inset-12 border border-violet-100/40 rounded-full" />
+      <div className="absolute inset-20 border border-violet-100/20 rounded-full" />
       
       {/* Pulsing glow rings */}
       <motion.div
-        className="absolute inset-0 rounded-full border border-indigo-200/50"
+        className="absolute inset-0 rounded-full border border-violet-200/50"
         animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute inset-8 rounded-full border border-cyan-200/40"
+        className="absolute inset-8 rounded-full border border-emerald-200/40"
         animate={{ scale: [1.05, 0.95, 1.05], opacity: [0.2, 0.5, 0.2] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
@@ -34,7 +34,7 @@ export const RadarScanner: React.FC = () => {
       {/* Central neural dot */}
       <div className="relative z-20 flex items-center justify-center">
         <motion.div
-          className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-indigo-200/50"
+          className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-violet-200/50"
           animate={{ scale: [0.9, 1.1, 0.9] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -62,8 +62,8 @@ export const RadarScanner: React.FC = () => {
       </div>
 
       {/* Grid line guidelines */}
-      <div className="absolute inset-0 w-full h-px bg-indigo-100/30 top-1/2 -translate-y-1/2" />
-      <div className="absolute inset-0 h-full w-px bg-indigo-100/30 left-1/2 -translate-x-1/2" />
+      <div className="absolute inset-0 w-full h-px bg-violet-100/30 top-1/2 -translate-y-1/2" />
+      <div className="absolute inset-0 h-full w-px bg-violet-100/30 left-1/2 -translate-x-1/2" />
     </div>
   );
 };
