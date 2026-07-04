@@ -215,4 +215,13 @@ export const api = {
         auth: true,
       }),
   },
+
+  copilot: {
+    chat: (message: string, history: { role: "user" | "assistant"; text: string }[]) =>
+      request<{ response: string }>("/api/v1/copilot/chat", {
+        method: "POST",
+        body: { message, history },
+        auth: true,
+      }),
+  },
 };

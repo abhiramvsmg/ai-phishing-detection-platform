@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { api } from "@/lib/api";
 
 interface Message {
   role: "user" | "assistant";
@@ -41,19 +42,34 @@ export function SecurityCopilotPanel({
 }: SecurityCopilotPanelProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSend(text: string) {
-    if (!text.trim()) return;
+  async function handleSend(text: string) {
+    if (!text.trim() || loading) return;
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: text.trim() },
-      {
-        role: "assistant",
-        text: getCopilotResponse(text.trim()),
-      },
-    ]);
+    const trimmed = text.trim();
     setInput("");
+    
+    // Add user message immediately
+    const userMsg: Message = { role: "user", text: trimmed };
+    setMessages((prev) => [...prev, userMsg]);
+    setLoading(true);
+
+    try {
+      // Call API
+      const res = await api.copilot.chat(trimmed, messages);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: res.response },
+      ]);
+    } catch (err: any) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "Failed to connect to AI Security Copilot: " + (err.message ?? err) },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -151,6 +167,27 @@ export function SecurityCopilotPanel({
                     </div>
                   </motion.div>
                 ))}
+                {loading && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex justify-start"
+                  >
+                    <div className="mr-2 mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-100 animate-pulse">
+                      <Bot className="h-3 w-3 text-emerald-650" />
+                    </div>
+                    <div className="max-w-[85%] rounded-xl rounded-bl-sm border border-slate-200 bg-white px-3 py-2.5 text-xs leading-relaxed font-medium text-slate-400">
+                      <span className="flex items-center gap-1.5">
+                        Thinking
+                        <span className="flex gap-0.5">
+                          <span className="h-1 w-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "0ms" }} />
+                          <span className="h-1 w-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "150ms" }} />
+                          <span className="h-1 w-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "300ms" }} />
+                        </span>
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               <div className="border-t border-violet-100 p-3 bg-white">

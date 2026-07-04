@@ -30,6 +30,9 @@ from app.routers.dashboard import (
 from app.routers.activity import (
     router as activity_router
 )
+from app.routers.copilot import (
+    router as copilot_router
+)
 
 # Create Tables
 Base.metadata.create_all(
@@ -58,6 +61,7 @@ app.include_router(admin_router)
 app.include_router(scans_router)
 app.include_router(dashboard_router)
 app.include_router(activity_router)
+app.include_router(copilot_router)
 
 
 @app.get("/")
