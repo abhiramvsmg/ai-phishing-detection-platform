@@ -70,7 +70,7 @@ export function ScanHistoryTable() {
                   className="group border-b border-white/[0.04] transition-colors hover:bg-white/[0.03]"
                 >
                   <td className="px-5 py-3.5">
-                    <span className="font-mono text-xs text-cyan-400/90">
+                    <span className="font-mono text-xs text-emerald-400/90">
                       {scan.id}
                     </span>
                   </td>
@@ -121,7 +121,7 @@ export function ScanHistoryTable() {
                     {scan.timestamp}
                   </td>
                   <td className="px-5 py-3.5">
-                    <button className="rounded p-1 text-zinc-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/[0.06] hover:text-cyan-400">
+                    <button className="rounded p-1 text-zinc-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-white/[0.06] hover:text-emerald-400">
                       <ExternalLink className="h-3.5 w-3.5" />
                     </button>
                   </td>
@@ -141,7 +141,7 @@ export function ScanHistoryTable() {
                 key={p}
                 className={`rounded px-2.5 py-1 text-xs font-medium ${
                   p === 1
-                    ? "bg-cyan-500/15 text-cyan-400"
+                    ? "bg-emerald-500/15 text-emerald-400"
                     : "text-zinc-500 hover:text-zinc-300"
                 }`}
               >

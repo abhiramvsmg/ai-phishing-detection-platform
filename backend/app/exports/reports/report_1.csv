@@ -1,0 +1,5 @@
+report_id,report_type,details,created_at
+1,SCAN_REPORT,"URL: http://secure-bank-login-verify.xyz
+Result: PHISHING
+Risk Score: 90
+Risk Level: HIGH",2026-07-01 12:47:28.815322
